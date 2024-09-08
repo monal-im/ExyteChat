@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public struct Message: Identifiable, Sendable {
+public class Message: ObservableObject, Identifiable {
 
     public enum Status: Equatable, Hashable, Sendable {
         case sending
@@ -49,20 +49,20 @@ public struct Message: Identifiable, Sendable {
         }
     }
 
-    public var id: String
-    public var user: User
-    public var status: Status?
-    public var createdAt: Date
+    @Published public var id: String
+    @Published public var user: User
+    @Published public var status: Status?
+    @Published public var createdAt: Date
 
-    public var attributedText: AttributedString
-    public var attachments: [Attachment]
-    public var reactions: [Reaction]
-    public var giphyMediaId: String?
-    public var recording: Recording?
-    public var replyMessage: ReplyMessage?
-    public var customData: [String: any Sendable]
+    @Published public var attributedText: AttributedString
+    @Published public var attachments: [Attachment]
+    @Published public var reactions: [Reaction]
+    @Published public var giphyMediaId: String?
+    @Published public var recording: Recording?
+    @Published public var replyMessage: ReplyMessage?
+    @Published public var customData: [String: any Sendable]
 
-    public var triggerRedraw: UUID?
+    @Published public var triggerRedraw: UUID?
 
     public var hasText: Bool {
         !attributedText.characters.isEmpty
@@ -180,6 +180,21 @@ extension Message: Equatable {
     }
 }
 
+extension Message: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.id)
+        hasher.combine(self.user)
+        hasher.combine(self.status)
+        hasher.combine(self.createdAt)
+        hasher.combine(self.attributedText)
+        hasher.combine(self.attachments)
+        hasher.combine(self.recording)
+        hasher.combine(self.replyMessage)
+    }
+}
+
+// Keep `Recording` a struct, to avoid a bug where the displayed time in the
+// audio recorder doesn't get updated unless the user presses one of the buttons
 public struct Recording: Codable, Hashable, Sendable {
     public var duration: Double
     public var waveformSamples: [CGFloat]
@@ -192,23 +207,23 @@ public struct Recording: Codable, Hashable, Sendable {
     }
 }
 
-public struct ReplyMessage: Codable, Identifiable, Hashable, Sendable {
-    public static func == (lhs: ReplyMessage, rhs: ReplyMessage) -> Bool {
-        lhs.id == rhs.id &&
-        lhs.user == rhs.user &&
-        lhs.createdAt == rhs.createdAt &&
-        lhs.attributedText == rhs.attributedText &&
-        lhs.attachments == rhs.attachments &&
-        lhs.recording == rhs.recording
+public class ReplyMessage: ObservableObject, Codable, Identifiable {
+    private enum CodingKeys: CodingKey {
+        case id
+        case user
+        case createdAt
+        case attributedText
+        case attachments
+        case recording
     }
 
-    public var id: String
-    public var user: User
-    public var createdAt: Date
+    @Published public var id: String
+    @Published public var user: User
+    @Published public var createdAt: Date
 
-    public var attributedText: AttributedString
-    public var attachments: [Attachment]
-    public var recording: Recording?
+    @Published public var attributedText: AttributedString
+    @Published public var attachments: [Attachment]
+    @Published public var recording: Recording?
 
     public var text: String {
         String(attributedText.characters)
@@ -246,8 +261,50 @@ public struct ReplyMessage: Codable, Identifiable, Hashable, Sendable {
         self.recording = recording
     }
 
+    required public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        user = try container.decode(User.self, forKey: .user)
+        createdAt = try container.decode(Date.self, forKey: .createdAt)
+        attributedText = try container.decode(AttributedString.self, forKey: .attributedText)
+        attachments = try container.decode([Attachment].self, forKey: .attachments)
+        recording = try container.decode(Recording?.self, forKey: .recording)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(user, forKey: .user)
+        try container.encode(createdAt, forKey: .createdAt)
+        try container.encode(attributedText, forKey: .attributedText)
+        try container.encode(attachments, forKey: .attachments)
+        try container.encode(recording, forKey: .recording)
+    }
+
     func toMessage() -> Message {
         Message(id: id, user: user, createdAt: createdAt, attributedText: attributedText, attachments: attachments, recording: recording)
+    }
+}
+
+extension ReplyMessage: Equatable {
+    public static func == (lhs: ReplyMessage, rhs: ReplyMessage) -> Bool {
+        lhs.id == rhs.id &&
+        lhs.user == rhs.user &&
+        lhs.createdAt == rhs.createdAt &&
+        lhs.attributedText == rhs.attributedText &&
+        lhs.attachments == rhs.attachments &&
+        lhs.recording == rhs.recording
+    }
+}
+
+extension ReplyMessage: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.id)
+        hasher.combine(self.user)
+        hasher.combine(self.createdAt)
+        hasher.combine(self.attributedText)
+        hasher.combine(self.attachments)
+        hasher.combine(self.recording)
     }
 }
 

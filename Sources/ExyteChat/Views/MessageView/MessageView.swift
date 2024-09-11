@@ -231,7 +231,7 @@ struct MessageView: View {
                 if let builder = params.avatarBuilder {
                     builder(message.user)
                 } else if let url = message.user.avatarURL {
-                    AvatarImageView(url: url, avatarSize: params.avatarSize, avatarCacheKey: message.user.avatarCacheKey)
+                    AvatarImageView(user: message.user, avatarSize: params.avatarSize, avatarCacheKey: message.user.avatarCacheKey)
                         .contentShape(Circle())
                         .onTapGesture {
                             params.tapAvatarClosure?(message.user, message.id)

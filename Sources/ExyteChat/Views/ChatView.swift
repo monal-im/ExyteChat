@@ -117,26 +117,26 @@ public struct ChatView<MessageContent: View, InputViewContent: View, MenuAction:
                     }
                 }
             }
-            .onChange(of: inputViewModel.text) { _ , newValue in
+            .onChange(of: inputViewModel.text) { newValue in
                 inputViewCustomizationParameters.onInputTextChange?(newValue)
             }
-            .onChange(of: inputViewCustomizationParameters.externalInputText) {
+            .onChange(of: inputViewCustomizationParameters.externalInputText) { _ in
                 DispatchQueue.main.async {
                     inputViewModel.text = inputViewCustomizationParameters.externalInputText ?? ""
                 }
             }
-            .onChange(of: selectedGiphyMedia) {
+            .onChange(of: selectedGiphyMedia) { _ in
                 if let giphyMedia = selectedGiphyMedia {
                     inputViewModel.attachments.giphyMedia = giphyMedia
                     inputViewModel.send()
                 }
             }
-            .onChange(of: inputViewModel.showPicker) { _ , newValue in
+            .onChange(of: inputViewModel.showPicker) { newValue in
                 if newValue {
                     globalFocusState.focus = nil
                 }
             }
-            .onChange(of: inputViewModel.showGiphyPicker) { _ , newValue in
+            .onChange(of: inputViewModel.showGiphyPicker) { newValue in
                 if newValue {
                     globalFocusState.focus = nil
                 }

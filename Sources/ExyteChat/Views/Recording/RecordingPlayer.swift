@@ -113,7 +113,7 @@ final actor RecordingPlayer: ObservableObject {
         player?.replaceCurrentItem(with: nil)
         player = nil
 
-        let audioAsset = AVURLAsset(url: url, options: recording.mimeType != nil ? [AVURLAssetOverrideMIMETypeKey: recording.mimeType] : [:])
+        let audioAsset = AVURLAsset(url: url, options: recording.mimeType != nil ? ["AVURLAssetOutOfBandMIMETypeKey": recording.mimeType] : [:])
         let playerItem = AVPlayerItem(asset: audioAsset)
         player = AVPlayer(playerItem: playerItem)
         

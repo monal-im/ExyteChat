@@ -43,7 +43,7 @@ struct SystemPhotoPickerModifier: ViewModifier {
                 selectionBehavior: selectionBehavior,
                 matching: matchingFilter
             )
-            .onChange(of: selection) { _, newValue in
+            .onChange(of: selection) { newValue in
                 guard !newValue.isEmpty else { return }
                 let medias = newValue.map { Media(source: SystemPickerMediaModel(item: $0)) }
                 selection = []

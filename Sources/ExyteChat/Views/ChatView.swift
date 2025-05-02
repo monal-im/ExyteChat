@@ -156,17 +156,17 @@ public struct ChatView<MessageContent: View, InputViewContent: View, MenuAction:
 
     private var mainViewWithBehaviors: some View {
         mainView
-            .onChange(of: inputViewModel.text) { _ , newValue in
+            .onChange(of: inputViewModel.text) { newValue in
                 inputViewCustomizationParameters.onInputTextChange?(newValue)
             }
-            .onChange(of: inputViewCustomizationParameters.externalInputText) { _, newValue in
+            .onChange(of: inputViewCustomizationParameters.externalInputText) { newValue in
                 let newValue = newValue ?? ""
                 if inputViewModel.text != newValue {
                     inputViewModel.text = newValue
                 }
             }
             // any attachment picker opening should resign the text field's focus
-            .onChange(of: [inputViewModel.showPicker, inputViewModel.showDocumentPicker, inputViewModel.showLocationPicker]) { _, newValues in
+            .onChange(of: [inputViewModel.showPicker, inputViewModel.showDocumentPicker, inputViewModel.showLocationPicker]) { newValues in
                 if newValues.contains(true) {
                     globalFocusState.focus = nil
                 }

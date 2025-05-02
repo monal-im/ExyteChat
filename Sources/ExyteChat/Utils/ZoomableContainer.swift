@@ -21,13 +21,24 @@ public struct ZoomableContainer<Content: View>: View {
     }
 
     public var body: some View {
-        ZoomableScrollView(maxScale: maxScale, scale: $currentScale, tapLocation: $tapLocation) {
-            content
+        //ios 17+ will zoom to the point the double tap was done, older ios versions will zoom to the center of the image instead
+        if #available(iOS 17.0, macCatalyst 17.0, *) {
+            ZoomableScrollView(maxScale: maxScale, scale: $currentScale, tapLocation: $tapLocation) {
+                content
+            }.onTapGesture(count: 2, perform: {location in
+                tapLocation = location
+                currentScale = currentScale == 1.0 ? doubleTapScale : 1.0
+            })
+        } else {
+            GeometryReader { proxy in
+                ZoomableScrollView(maxScale: maxScale, scale: $currentScale, tapLocation: $tapLocation) {
+                    content
+                }.onTapGesture(count: 2) {
+                    tapLocation = CGPoint(x:proxy.size.width/2, y:proxy.size.height/2)
+                    currentScale = currentScale == 1.0 ? doubleTapScale : 1.0
+                }
+            }
         }
-        .onTapGesture(count: 2, perform: { location in
-            tapLocation = location
-            currentScale = currentScale == 1.0 ? doubleTapScale : 1.0
-        })
     }
 
     fileprivate struct ZoomableScrollView<InnerContent: View>: UIViewRepresentable {

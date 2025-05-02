@@ -93,14 +93,14 @@ struct AttachmentsEditor<InputViewContent: View>: View {
             inputViewModel.attachments.medias = []
             inputViewModel.showPicker = false
         }
-        .fullscreenMedia($currentFullscreenMedia)
+        .currentFullscreenMedia($currentFullscreenMedia)
         .pickerMode($inputViewModel.mediaPickerMode)
         .setMediaPickerParameters(mediaPickerParameters)
         .background(theme.colors.mainBG)
-        .onChange(of: currentFullscreenMedia) {
+        .onChange(of: currentFullscreenMedia) { _ in
             assembleSelectedMedia()
         }
-        .onChange(of: inputViewModel.showPicker) {
+        .onChange(of: inputViewModel.showPicker) { _ in
             let showFullscreenPreview = mediaPickerParameters.selectionParameters.showFullscreenPreview
             let selectionLimit = mediaPickerParameters.selectionParameters.selectionLimit ?? 1
 

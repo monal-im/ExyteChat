@@ -88,7 +88,7 @@ struct RecordWaveformPlaying: View {
                 let maxLen = computeMaxLength(adjusted)
                 waveformZStack(adjusted: adjusted, maxLen: maxLen)
                     .onAppear { recordingMaxLen = maxLen }
-                    .onChange(of: g.size.width) { _, newWidth in
+                    .onChange(of: g.size.width) { newWidth in
                         let adj = adjustedSamples(newWidth)
                         recordingMaxLen = computeMaxLength(adj)
                     }

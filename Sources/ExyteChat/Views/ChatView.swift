@@ -101,15 +101,15 @@ public struct ChatView<MessageContent: View, InputViewContent: View, MenuAction:
         mainView
             .background(chatBackground())
             .environmentObject(keyboardState)
-            .onChange(of: inputViewModel.text) { _ , newValue in
+            .onChange(of: inputViewModel.text) { newValue in
                 inputViewCustomizationParameters.onInputTextChange?(newValue)
             }
-            .onChange(of: inputViewCustomizationParameters.externalInputText) {
+            .onChange(of: inputViewCustomizationParameters.externalInputText) { _ in
                 DispatchQueue.main.async {
                     inputViewModel.text = inputViewCustomizationParameters.externalInputText ?? ""
                 }
             }
-            .onChange(of: inputViewModel.showPicker) { _ , newValue in
+            .onChange(of: inputViewModel.showPicker) { newValue in
                 if newValue {
                     globalFocusState.focus = nil
                 }

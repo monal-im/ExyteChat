@@ -120,7 +120,7 @@ struct FinalMeasuringTrickView<Content: View>: View {
                                 rawSize = geo.size
                             }
                         }
-                        .onChange(of: geo.size) { _ , newSize in
+                        .onChange(of: geo.size) { newSize in
                             if let id {
                                 print("measuring", id, rawSize, newSize)
                             }
@@ -130,7 +130,7 @@ struct FinalMeasuringTrickView<Content: View>: View {
                         }
                 }
             )
-            .onChange(of: rawSize) { _ , newValue in
+            .onChange(of: rawSize) { newValue in
                 Task { @MainActor in
                     try? await Task.sleep(for: .milliseconds(16)) // 1 frame
                     if let id {

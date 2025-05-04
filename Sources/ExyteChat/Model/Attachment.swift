@@ -61,6 +61,7 @@ public struct Attachment: Codable, Identifiable, Hashable, Sendable {
     public let full: URL
     public let fullUploadStatus: UploadStatus?
     public let type: AttachmentType
+    public let mimeType: String?
     public let thumbnailCacheKey: String?
     public let fullCacheKey: String?
     
@@ -73,6 +74,7 @@ public struct Attachment: Codable, Identifiable, Hashable, Sendable {
         thumbnail: URL,
         full: URL,
         type: AttachmentType,
+        mimeType: String? = nil,
         thumbnailCacheKey: String? = nil,
         fullCacheKey: String? = nil,
         fullUploadStatus: UploadStatus? = nil,
@@ -83,6 +85,7 @@ public struct Attachment: Codable, Identifiable, Hashable, Sendable {
         self.thumbnail = thumbnail
         self.full = full
         self.type = type
+        self.mimeType = mimeType
         self.thumbnailCacheKey = thumbnailCacheKey
         self.fullCacheKey = fullCacheKey
         self.fullUploadStatus = fullUploadStatus
@@ -94,6 +97,7 @@ public struct Attachment: Codable, Identifiable, Hashable, Sendable {
         id: String,
         url: URL,
         type: AttachmentType,
+        mimeType: String? = nil,
         cacheKey: String? = nil,
         fileName: String? = nil,
         fileSize: Int? = nil
@@ -103,6 +107,7 @@ public struct Attachment: Codable, Identifiable, Hashable, Sendable {
             thumbnail: url,
             full: url,
             type: type,
+            mimeType: mimeType,
             thumbnailCacheKey: cacheKey,
             fullCacheKey: cacheKey,
             fileName: fileName,
@@ -116,6 +121,7 @@ public struct Attachment: Codable, Identifiable, Hashable, Sendable {
         full: URL? = nil,
         fullUploadStatus: UploadStatus? = nil,
         type: AttachmentType? = nil,
+        mimeType: String? = nil,
         thumbnailCacheKey: String? = nil,
         fullCacheKey: String? = nil,
         fileName: String? = nil,
@@ -126,6 +132,7 @@ public struct Attachment: Codable, Identifiable, Hashable, Sendable {
             thumbnail: thumbnail ?? self.thumbnail,
             full: full ?? self.full,
             type: type ?? self.type,
+            mimeType: mimeType ?? self.mimeType,
             thumbnailCacheKey: thumbnailCacheKey ?? self.thumbnailCacheKey,
             fullCacheKey: fullCacheKey ?? self.fullCacheKey,
             fullUploadStatus: fullUploadStatus ?? self.fullUploadStatus,

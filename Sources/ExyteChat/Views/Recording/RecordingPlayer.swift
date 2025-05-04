@@ -113,7 +113,8 @@ final actor RecordingPlayer: ObservableObject {
         player?.replaceCurrentItem(with: nil)
         player = nil
 
-        let playerItem = AVPlayerItem(url: url)
+        let audioAsset = AVURLAsset(url: url, options: recording.mimeType != nil ? [AVURLAssetOverrideMIMETypeKey: recording.mimeType] : [:])
+        let playerItem = AVPlayerItem(asset: audioAsset)
         player = AVPlayer(playerItem: playerItem)
         
         NotificationCenter.default.addObserver(forName: .chatAudioIsPlaying, object: nil, queue: nil) { notification in

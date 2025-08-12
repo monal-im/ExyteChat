@@ -5,7 +5,6 @@
 
 import SwiftUI
 import ExyteMediaPicker
-import GiphyUISDK
 
 public enum InputViewStyle: Sendable {
     case message
@@ -20,7 +19,6 @@ public enum AudioRecordingMode: Sendable {
 }
 
 public enum InputViewAction: Sendable {
-    case giphy
     case photo
     case add
     case camera
@@ -64,7 +62,6 @@ public enum InputViewState: Sendable {
 public enum AvailableInputType: Sendable {
     case text
     case media
-    case giphy
     case document
     case location
     case audio
@@ -72,7 +69,6 @@ public enum AvailableInputType: Sendable {
 
 public struct InputViewAttachments {
     var medias: [Media] = []
-    var giphyMedia: GPHMedia?
     var documents: [DocumentItem] = []
     var staticLocation: StaticLocation?
     var liveLocation: LiveLocation?

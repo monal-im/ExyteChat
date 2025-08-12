@@ -57,7 +57,6 @@ open class Message: ObservableObject, Identifiable {
     @Published public var attributedText: AttributedString
     @Published public var attachments: [Attachment]
     @Published public var reactions: [Reaction]
-    @Published public var giphyMediaId: String?
     @Published public var staticLocation: StaticLocation?
     @Published public var liveLocation: LiveLocation?
     @Published public var recording: Recording?
@@ -81,7 +80,6 @@ open class Message: ObservableObject, Identifiable {
         createdAt: Date = Date(),
         text: String = "",
         attachments: [Attachment] = [],
-        giphyMediaId: String? = nil,
         staticLocation: StaticLocation? = nil,
         liveLocation: LiveLocation? = nil,
         reactions: [Reaction] = [],
@@ -95,7 +93,6 @@ open class Message: ObservableObject, Identifiable {
         self.createdAt = createdAt
         self.attributedText = text.applyDefaultAttributes()
         self.attachments = attachments
-        self.giphyMediaId = giphyMediaId
         self.staticLocation = staticLocation
         self.liveLocation = liveLocation
         self.reactions = reactions
@@ -111,7 +108,6 @@ open class Message: ObservableObject, Identifiable {
         createdAt: Date = Date(),
         attributedText: AttributedString,
         attachments: [Attachment] = [],
-        giphyMediaId: String? = nil,
         staticLocation: StaticLocation? = nil,
         liveLocation: LiveLocation? = nil,
         reactions: [Reaction] = [],
@@ -125,7 +121,6 @@ open class Message: ObservableObject, Identifiable {
         self.createdAt = createdAt
         self.attributedText = attributedText
         self.attachments = attachments
-        self.giphyMediaId = giphyMediaId
         self.staticLocation = staticLocation
         self.liveLocation = liveLocation
         self.reactions = reactions
@@ -160,8 +155,6 @@ open class Message: ObservableObject, Identifiable {
             Attachment(id: document.id, url: document.url, type: .document, fileName: document.fileName, fileSize: document.fileSize)
         }
 
-        let giphyMediaId = draft.giphyMedia?.id
-
         return Message(
             id: id,
             user: user,
@@ -169,7 +162,6 @@ open class Message: ObservableObject, Identifiable {
             createdAt: draft.createdAt,
             text: draft.text,
             attachments: attachments + documentAttachments,
-            giphyMediaId: giphyMediaId,
             staticLocation: draft.staticLocation,
             liveLocation: draft.liveLocation,
             recording: draft.recording,
@@ -191,7 +183,6 @@ extension Message: Equatable {
         lhs.status == rhs.status &&
         lhs.createdAt == rhs.createdAt &&
         lhs.attributedText == rhs.attributedText &&
-        lhs.giphyMediaId == rhs.giphyMediaId &&
         lhs.staticLocation == rhs.staticLocation &&
         lhs.liveLocation == rhs.liveLocation &&
         lhs.attachments == rhs.attachments &&

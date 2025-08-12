@@ -223,10 +223,6 @@ struct InputView: View {
         availableInputs.contains(AvailableInputType.audio)
     }
 
-    func isGiphyAvailable() -> Bool {
-        availableInputs.contains(AvailableInputType.giphy)
-    }
-
     func isMediaAvailable() -> Bool {
         availableInputs.contains(AvailableInputType.media)
     }

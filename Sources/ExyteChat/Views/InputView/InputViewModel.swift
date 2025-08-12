@@ -14,7 +14,6 @@ final class InputViewModel: ObservableObject {
     @Published var attachments = InputViewAttachments()
     @Published var state: InputViewState = .empty
 
-    @Published var showGiphyPicker = false
     @Published var showPicker = false
   
     @Published var mediaPickerMode = MediaPickerMode.photos
@@ -39,7 +38,6 @@ final class InputViewModel: ObservableObject {
 
     func onStart() {
         subscribeValidation()
-        subscribeGiphyPicker()
     }
 
     func onStop() {
@@ -49,7 +47,6 @@ final class InputViewModel: ObservableObject {
     func reset() {
         DispatchQueue.main.async { [weak self] in
             self?.showPicker = false
-            self?.showGiphyPicker = false
             self?.text = ""
             self?.saveEditingClosure = nil
             self?.attachments = InputViewAttachments()
@@ -79,8 +76,6 @@ final class InputViewModel: ObservableObject {
 
     private func inputViewActionInternal(_ action: InputViewAction) {
         switch action {
-        case .giphy:
-            showGiphyPicker = true
         case .photo:
             mediaPickerMode = .photos
             showPicker = true
@@ -184,16 +179,6 @@ private extension InputViewModel {
         .store(in: &subscriptions)
     }
 
-    func subscribeGiphyPicker() {
-        $showGiphyPicker
-            .sink { [weak self] value in
-                if !value {
-                  self?.attachments.giphyMedia = nil
-                }
-            }
-            .store(in: &subscriptions)
-    }
-  
     func subscribeRecordPlayer() {
         Task { @MainActor in
             if let recordingPlayer {
@@ -218,7 +203,6 @@ private extension InputViewModel {
         let draft = DraftMessage(
             text: text,
             medias: attachments.medias,
-            giphyMedia: attachments.giphyMedia,
             recording: attachments.recording,
             replyMessage: attachments.replyMessage,
             createdAt: Date()

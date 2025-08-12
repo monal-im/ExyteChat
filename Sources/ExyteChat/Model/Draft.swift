@@ -3,14 +3,12 @@
 //
 
 import Foundation
-import GiphyUISDK
 import ExyteMediaPicker
 
 public struct DraftMessage: Sendable {
     public var id: String?
     public let text: String
     public let medias: [Media]
-    public let giphyMedia: GPHMedia?
     public let documents: [DocumentItem]
     public let staticLocation: StaticLocation?
     public let liveLocation: LiveLocation?
@@ -22,7 +20,6 @@ public struct DraftMessage: Sendable {
         id: String? = nil,
         text: String,
         medias: [Media],
-        giphyMedia: GPHMedia?,
         documents: [DocumentItem] = [],
         staticLocation: StaticLocation? = nil,
         liveLocation: LiveLocation? = nil,
@@ -33,7 +30,6 @@ public struct DraftMessage: Sendable {
         self.id = id
         self.text = text
         self.medias = medias
-        self.giphyMedia = giphyMedia
         self.documents = documents
         self.staticLocation = staticLocation
         self.liveLocation = liveLocation

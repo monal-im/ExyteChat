@@ -7,7 +7,6 @@
 
 import SwiftUI
 import ExyteMediaPicker
-import GiphyUISDK
 import AnchoredPopup
 
 public enum InputViewStyle: Sendable {
@@ -23,7 +22,6 @@ public enum AudioRecordingMode: Sendable {
 }
 
 public enum InputViewAction: Sendable {
-    case giphy
     case photo
     case add
     case camera
@@ -67,7 +65,6 @@ public enum InputViewState: Sendable {
 public enum AvailableInputType: Sendable {
     case text
     case media
-    case giphy
     case document
     case location
     case audio
@@ -75,7 +72,6 @@ public enum AvailableInputType: Sendable {
 
 public struct InputViewAttachments {
     var medias: [Media] = []
-    var giphyMedia: GPHMedia?
     var documents: [DocumentItem] = []
     var staticLocation: StaticLocation?
     var liveLocation: LiveLocation?
@@ -485,9 +481,6 @@ struct InputView: View {
                 items.append(AttachMenuItem(icon: theme.images.inputView.attachCamera, title: localization.attachCameraText, action: .camera))
             }
         }
-        if isGiphyAvailable() {
-            items.append(AttachMenuItem(icon: theme.images.inputView.sticker, title: localization.attachGifText, action: .giphy))
-        }
         if isDocumentAvailable() {
             items.append(AttachMenuItem(icon: theme.images.attachMenu.document, title: localization.attachDocumentText, action: .document))
         }
@@ -505,8 +498,6 @@ struct InputView: View {
             attachMenuButton(items: items)
         } else if let item = items.first, item.action == .photo {
             menuButton(action: .photo, image: theme.images.inputView.attach)
-        } else if let item = items.first, item.action == .giphy {
-            menuButton(action: .giphy, image: theme.images.inputView.sticker)
         } else if let item = items.first, item.action == .document {
             menuButton(action: .document, image: theme.images.attachMenu.document)
         } else if let item = items.first, item.action == .location {
@@ -800,10 +791,6 @@ struct InputView: View {
     
     private func isAudioAvailable() -> Bool {
         return availableInputs.contains(AvailableInputType.audio)
-    }
-    
-    private func isGiphyAvailable() -> Bool {
-        return availableInputs.contains(AvailableInputType.giphy)
     }
     
     private func isMediaAvailable() -> Bool {

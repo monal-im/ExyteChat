@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import GiphyUISDK
 import ExyteMediaPicker
 
 public typealias MediaPickerLiveCameraStyle = LiveCameraCellStyle
@@ -29,7 +28,6 @@ public struct ChatView<MessageContent: View, InputViewContent: View, MenuAction:
     
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.chatTheme) private var theme
-    @Environment(\.giphyConfig) private var giphyConfig
 
     // MARK: - Parameters
 
@@ -98,25 +96,10 @@ public struct ChatView<MessageContent: View, InputViewContent: View, MenuAction:
     @State private var timeViewSize = CGSize.zero
     @State private var cellFrames = [String: CGRect]()
 
-    @State private var giphyConfigured = false
-    @State private var selectedGiphyMedia: GPHMedia? = nil
-
     public var body: some View {
         mainView
             .background(chatBackground())
             .environmentObject(keyboardState)
-            .onAppear {
-                if isGiphyAvailable() {
-                    if let giphyKey = giphyConfig.giphyKey {
-                        if !giphyConfigured {
-                            giphyConfigured = true
-                            Giphy.configure(apiKey: giphyKey)
-                        }
-                    } else {
-                        print("WARNING: giphy key not provided, please pass a key using giphyConfig")
-                    }
-                }
-            }
             .onChange(of: inputViewModel.text) { newValue in
                 inputViewCustomizationParameters.onInputTextChange?(newValue)
             }
@@ -125,31 +108,9 @@ public struct ChatView<MessageContent: View, InputViewContent: View, MenuAction:
                     inputViewModel.text = inputViewCustomizationParameters.externalInputText ?? ""
                 }
             }
-            .onChange(of: selectedGiphyMedia) { _ in
-                if let giphyMedia = selectedGiphyMedia {
-                    inputViewModel.attachments.giphyMedia = giphyMedia
-                    inputViewModel.send()
-                }
-            }
             .onChange(of: inputViewModel.showPicker) { newValue in
                 if newValue {
                     globalFocusState.focus = nil
-                }
-            }
-            .onChange(of: inputViewModel.showGiphyPicker) { newValue in
-                if newValue {
-                    globalFocusState.focus = nil
-                }
-            }
-            .sheet(isPresented: $inputViewModel.showGiphyPicker) {
-                if giphyConfig.giphyKey != nil {
-                    GiphyEditorView(
-                        giphyConfig: giphyConfig,
-                        selectedMedia: $selectedGiphyMedia
-                    )
-                    .environmentObject(globalFocusState)
-                } else {
-                    Text("no giphy key found")
                 }
             }
             .fullScreenCover(isPresented: $inputViewModel.showPicker) {
@@ -476,10 +437,6 @@ public struct ChatView<MessageContent: View, InputViewContent: View, MenuAction:
     
     private func isLandscape() -> Bool {
         UIDevice.current.orientation.isLandscape
-    }
-    
-    private func isGiphyAvailable() -> Bool {
-        inputViewCustomizationParameters.availableInputs.contains(AvailableInputType.giphy)
     }
 }
 

@@ -22,8 +22,6 @@ struct MessageView: View {
     @Binding var reactionViewWidth: CGFloat // hack to pass real updates through UIKit
     let isDisplayingMessageMenu: Bool
 
-    @State var giphyAspectRatio: CGFloat = 1
-
     static let widthWithMedia: CGFloat = 204
     static let statusViewWidth: CGFloat = 10
     static let horizontalScreenEdgePadding: CGFloat = 12
@@ -155,10 +153,6 @@ struct MessageView: View {
                         .padding(.horizontal, MessageView.horizontalTextPadding)
                 }
 
-                if let giphyMediaId = message.giphyMediaId {
-                    giphyView(giphyMediaId)
-                }
-
                 if !message.attachments.isEmpty {
                     attachmentsView(message)
                 }
@@ -273,12 +267,6 @@ struct MessageView: View {
             }
         }
         .contentShape(Rectangle())
-    }
-
-    @ViewBuilder
-    func giphyView(_ giphyMediaId: String) -> some View {
-        GiphyMediaView(id: giphyMediaId, aspectRatio: $giphyAspectRatio)
-            .frame(width: 200 * giphyAspectRatio, height: 200)
     }
 
     @ViewBuilder

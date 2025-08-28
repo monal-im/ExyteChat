@@ -16,7 +16,7 @@ struct MessageView: View {
 
     @ObservedObject var viewModel: ChatViewModel
 
-    let message: Message
+    @ObservedObject var message: Message
     let positionInUserGroup: PositionInUserGroup
     let positionInMessagesSection: PositionInMessagesSection
     let chatType: ChatType

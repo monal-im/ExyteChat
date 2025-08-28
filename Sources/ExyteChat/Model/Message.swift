@@ -50,24 +50,24 @@ open class Message: ObservableObject, Identifiable {
     }
 
     @Published public var id: String
-    @Published public var user: User
-    @Published public var status: Status?
-    @Published public var createdAt: Date
+    @Published open var user: User
+    @Published open var status: Status?
+    @Published open var createdAt: Date
 
-    @Published public var attributedText: AttributedString
-    @Published public var attachments: [Attachment]
-    @Published public var reactions: [Reaction]
-    @Published public var recording: Recording?
-    @Published public var replyMessage: ReplyMessage?
-    @Published public var customData: [String: any Sendable]
+    @Published open var attributedText: AttributedString
+    @Published open var attachments: [Attachment]
+    @Published open var reactions: [Reaction]
+    @Published open var recording: Recording?
+    @Published open var replyMessage: ReplyMessage?
+    @Published open var customData: [String: any Sendable]
 
     @Published public var triggerRedraw: UUID?
 
-    public var hasText: Bool {
+    open var hasText: Bool {
         !attributedText.characters.isEmpty
     }
 
-    public var text: String {
+    open var text: String {
         String(attributedText.characters)
     }
 

@@ -22,6 +22,10 @@ struct MessageStatusView: View {
                 theme.images.message.sent
                     .resizable()
                     .foregroundColor(theme.colors.messageMyBG)
+           case .received:
+                theme.images.message.received
+                    .resizable()
+                    .foregroundColor(theme.colors.messageMyBG)
             case .read:
                 theme.images.message.read
                     .resizable()

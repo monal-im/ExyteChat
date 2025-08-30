@@ -12,6 +12,7 @@ open class Message: ObservableObject, Identifiable {
     public enum Status: Equatable, Hashable, Sendable {
         case sending
         case sent
+        case received
         case readBy([String]) // user ids
         case error(DraftMessage)
 
@@ -21,6 +22,8 @@ open class Message: ObservableObject, Identifiable {
                 return hasher.combine("sending")
             case .sent:
                 return hasher.combine("sent")
+            case .received:
+                return hasher.combine("received")
             case .readBy:
                 return hasher.combine("read")
             case .error:
@@ -33,6 +36,8 @@ open class Message: ObservableObject, Identifiable {
             case (.sending, .sending):
                 return true
             case (.sent, .sent):
+                return true
+            case (.received, .received):
                 return true
             case (.readBy(let r1), .readBy(let r2)):
                 return r1 == r2

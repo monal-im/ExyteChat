@@ -226,7 +226,7 @@ struct MessageView: View {
             if showAvatar {
                 if let builder = params.avatarBuilder {
                     builder(message.user)
-                } else if let url = message.user.avatarURL {
+                } else if message.user.avatarURL != nil || message.user.avatarImage != nil {
                     AvatarImageView(user: message.user, avatarSize: params.avatarSize, avatarCacheKey: message.user.avatarCacheKey)
                         .contentShape(Circle())
                         .onTapGesture {

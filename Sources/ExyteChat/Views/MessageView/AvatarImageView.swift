@@ -11,15 +11,23 @@ struct AvatarImageView: View {
     var avatarCacheKey: String? = nil
 
     var body: some View {
-        CachedAsyncImage(url: user?.avatarURL, cacheKey: avatarCacheKey) { image in
-            image
+        if let user = user, let avatarImage = user.avatarImage {
+            Image(uiImage: avatarImage)
                 .resizable()
                 .scaledToFill()
-        } placeholder: {
-            Rectangle().fill(Color.gray)
+                .viewSize(avatarSize)
+                .clipShape(Circle())
+        } else {
+            CachedAsyncImage(url: user?.avatarURL, cacheKey: avatarCacheKey) { image in
+                image
+                    .resizable()
+                    .scaledToFill()
+            } placeholder: {
+                Rectangle().fill(Color.gray)
+            }
+            .viewSize(avatarSize)
+            .clipShape(Circle())
         }
-        .viewSize(avatarSize)
-        .clipShape(Circle())
     }
 }
 

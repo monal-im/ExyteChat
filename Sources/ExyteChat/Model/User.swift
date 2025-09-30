@@ -3,6 +3,7 @@
 //
 
 import Foundation
+import UIKit
 
 public enum UserType: Int, Codable, Sendable {
     case current = 0, other, system
@@ -13,6 +14,7 @@ open class User: ObservableObject, Codable, Identifiable {
         case id
         case name
         case avatarURL
+        case avatarImage
         case avatarCacheKey
         case type
     }
@@ -20,22 +22,25 @@ open class User: ObservableObject, Codable, Identifiable {
     @Published public var id: String
     @Published open var name: String
     @Published open var avatarURL: URL?
+    @Published open var avatarImage: UIImage?
     @Published open var avatarCacheKey: String?
     public let type: UserType
     open var isCurrentUser: Bool { type == .current }
 
-    public init(id: String, name: String, avatarURL: URL?, avatarCacheKey: String? = nil, isCurrentUser: Bool) {
+    public init(id: String, name: String, avatarURL: URL? = nil, avatarCacheKey: String? = nil, isCurrentUser: Bool) {
         self.id = id
         self.name = name
         self.avatarURL = avatarURL
+        self.avatarImage = nil
         self.avatarCacheKey = avatarCacheKey
         self.type = isCurrentUser ? .current : .other
     }
     
-    public init(id: String, name: String, avatarURL: URL?, avatarCacheKey: String? = nil, type: UserType) {
+    public init(id: String, name: String, avatarURL: URL? = nil, avatarCacheKey: String? = nil, type: UserType) {
         self.id = id
         self.name = name
         self.avatarURL = avatarURL
+        self.avatarImage = nil
         self.avatarCacheKey = avatarCacheKey
         self.type = type
     }
@@ -64,6 +69,7 @@ extension User: Equatable {
         lhs.id == rhs.id &&
         lhs.name == rhs.name &&
         lhs.avatarURL == rhs.avatarURL &&
+        lhs.avatarImage == rhs.avatarImage &&
         lhs.avatarCacheKey == rhs.avatarCacheKey &&
         lhs.isCurrentUser == rhs.isCurrentUser
     }
@@ -75,6 +81,7 @@ extension User: Hashable {
         hasher.combine(self.name)
         hasher.combine(self.isCurrentUser)
         hasher.combine(self.avatarURL)
+        hasher.combine(self.avatarImage)
         hasher.combine(self.avatarCacheKey)
     }
 }

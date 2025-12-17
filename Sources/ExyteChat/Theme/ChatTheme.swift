@@ -98,7 +98,6 @@ public struct ChatTheme {
         public var messageMyBG: Color
         public var messageMyText: Color
         public var messageMyTimeText: Color
-        public var messageReadStatus: Color
 
         public var messageFriendBG: Color
         public var messageFriendText: Color
@@ -132,7 +131,6 @@ public struct ChatTheme {
             mainText: Color = Color("mainText", bundle: .current),
             mainCaptionText: Color = Color("mainCaptionText", bundle: .current),
             messageMyBG: Color = Color("messageMyBG", bundle: .current),
-            messageReadStatus: Color = Color("messageReadStatus", bundle: .current),
             messageMyText: Color = Color.white,
             messageMyTimeText: Color = Color("messageMyTimeText", bundle: .current),
             messageFriendBG: Color = Color("messageFriendBG", bundle: .current),
@@ -161,7 +159,6 @@ public struct ChatTheme {
             self.mainCaptionText = mainCaptionText
             self.messageMyBG = messageMyBG
             self.messageMyText = messageMyText
-            self.messageReadStatus = messageReadStatus
             self.messageMyTimeText = messageMyTimeText
             self.messageFriendBG = messageFriendBG
             self.messageFriendText = messageFriendText
@@ -191,7 +188,6 @@ public struct ChatTheme {
             self.mainCaptionText = copy.mainCaptionText
             self.messageMyBG = copy.messageMyBG
             self.messageMyText = copy.messageMyText
-            self.messageReadStatus = copy.messageReadStatus
             self.messageMyTimeText = copy.messageMyTimeText
             self.messageFriendBG = copy.messageFriendBG
             self.messageFriendText = copy.messageFriendText
@@ -287,7 +283,6 @@ public struct ChatTheme {
             public var playVideo: Image
             public var read: Image
             public var sending: Image
-            public var delivered: Image
             public var sent: Image
         }
 
@@ -361,7 +356,6 @@ public struct ChatTheme {
             playVideo: Image? = nil,
             read: Image? = nil,
             sending: Image? = nil,
-            delivered: Image? = nil,
             sent: Image? = nil,
             delete: Image? = nil,
             edit: Image? = nil,
@@ -429,10 +423,9 @@ public struct ChatTheme {
                 pauseVideo: pauseVideo ?? Image(systemName: "pause.circle.fill"),
                 playAudio: playAudio ?? Image("playAudio", bundle: .current),
                 playVideo: playVideo ?? Image(systemName: "play.circle.fill"),
-                read: read ?? Image(uiImage: UIImage(named: "checkAll", in: .current, with: nil)!),
+                read: read ?? Image(systemName: "checkmark.circle.fill"),
                 sending: sending ?? Image(systemName: "clock"),
-                delivered: delivered ?? Image(uiImage: UIImage(named: "checkAll", in: .current, with: nil)!),
-                sent: sent ?? Image(uiImage: UIImage(named: "check", in: .current, with: nil)!)
+                sent: sent ?? Image(systemName: "checkmark.circle")
             )
 
             self.messageMenu = MessageMenu(

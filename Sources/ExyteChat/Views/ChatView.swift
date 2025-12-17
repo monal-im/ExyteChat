@@ -58,7 +58,6 @@ public struct ChatView<MessageContent: View, InputViewContent: View, MenuAction:
     var sections: [MessagesSection]
     var ids: [String]
     var didSendMessage: (DraftMessage) -> Void
-    var didUpdateAttachmentStatus: ((AttachmentUploadUpdate) -> Void)?
 
     // MARK: - Simple view builders
 
@@ -280,9 +279,6 @@ public struct ChatView<MessageContent: View, InputViewContent: View, MenuAction:
             viewModel.didSendMessage = didSendMessage
             viewModel.inputViewModel = inputViewModel
             viewModel.globalFocusState = globalFocusState
-            if let didUpdateAttachmentStatus {
-                viewModel.didUpdateAttachmentStatus = didUpdateAttachmentStatus
-            }
 
             inputViewModel.didSendMessage = { value in
                 Task { @MainActor in

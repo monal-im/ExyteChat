@@ -78,8 +78,7 @@ extension ChatView {
             _ message: Message
         ) -> Void = { (selectedMenuAction: DefaultMessageMenuAction, defaultActionClosure, message) in
             defaultActionClosure(message, selectedMenuAction)
-        },
-        didUpdateAttachmentStatus: ((AttachmentUploadUpdate) -> Void)? = nil
+        }
     ) {
         self.type = chatType
         self.sections = ChatView.mapMessages(messages, chatType: chatType, replyMode: replyMode)
@@ -88,7 +87,6 @@ extension ChatView {
         self.messageBuilder = messageBuilder
         self.inputViewBuilder = inputViewBuilder
         self.messageMenuAction = messageMenuAction
-        self.didUpdateAttachmentStatus = didUpdateAttachmentStatus
     }
 }
 

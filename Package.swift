@@ -19,10 +19,6 @@ let package = Package(
             from: "3.4.4"
         ),
         .package(
-            url: "https://github.com/onevcat/Kingfisher",
-            from: "8.5.0"
-        ),
-        .package(
             url: "https://github.com/exyte/AnchoredPopup.git",
             from: "1.1.3"
         ),
@@ -32,7 +28,6 @@ let package = Package(
             name: "ExyteChat",
             dependencies: [
                 .product(name: "ExyteMediaPicker", package: "MediaPicker"),
-                .product(name: "Kingfisher", package: "Kingfisher"),
                 .product(name: "AnchoredPopup", package: "AnchoredPopup")
             ],
             swiftSettings: [

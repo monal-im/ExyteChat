@@ -22,13 +22,18 @@ let package = Package(
             url: "https://github.com/exyte/AnchoredPopup.git",
             from: "1.1.3"
         ),
+        .package(
+            url: "https://github.com/exyte/SVGView.git",
+            from: "1.0.6"
+        ),
     ],
     targets: [
         .target(
             name: "ExyteChat",
             dependencies: [
                 .product(name: "ExyteMediaPicker", package: "MediaPicker"),
-                .product(name: "AnchoredPopup", package: "AnchoredPopup")
+                .product(name: "AnchoredPopup", package: "AnchoredPopup"),
+                .product(name: "SVGView", package: "SVGView"),
             ],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency")

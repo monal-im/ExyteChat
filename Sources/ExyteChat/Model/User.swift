@@ -3,6 +3,7 @@
 //
 
 import Foundation
+import UIKit
 
 public enum UserType: Int, Codable, Sendable {
     case current = 0, other, system
@@ -14,6 +15,7 @@ open class User: ObservableObject, Codable, Identifiable {
         case name
         case avatarURL
         case avatarData
+        case avatarImage
         case avatarCacheKey
         case type
     }
@@ -22,6 +24,7 @@ open class User: ObservableObject, Codable, Identifiable {
     @Published open var name: String
     @Published open var avatarURL: URL?
     @Published open var avatarData: Data?
+    @Published open var avatarImage: UIImage?
     @Published open var avatarCacheKey: String?
     public let type: UserType
     open var isCurrentUser: Bool { type == .current }
@@ -31,6 +34,7 @@ open class User: ObservableObject, Codable, Identifiable {
         self.name = name
         self.avatarURL = avatarURL
         self.avatarData = avatarData
+        self.avatarImage = nil
         self.avatarCacheKey = avatarCacheKey
         self.type = isCurrentUser ? .current : .other
     }
@@ -40,6 +44,7 @@ open class User: ObservableObject, Codable, Identifiable {
         self.name = name
         self.avatarURL = avatarURL
         self.avatarData = avatarData
+        self.avatarImage = nil
         self.avatarCacheKey = avatarCacheKey
         self.type = type
     }
@@ -71,6 +76,7 @@ extension User: Equatable {
         lhs.name == rhs.name &&
         lhs.avatarURL == rhs.avatarURL &&
         lhs.avatarData == rhs.avatarData &&
+        lhs.avatarImage == rhs.avatarImage &&
         lhs.avatarCacheKey == rhs.avatarCacheKey &&
         lhs.isCurrentUser == rhs.isCurrentUser
     }
@@ -82,6 +88,8 @@ extension User: Hashable {
         hasher.combine(self.name)
         hasher.combine(self.isCurrentUser)
         hasher.combine(self.avatarURL)
+        hasher.combine(self.avatarData)
+        hasher.combine(self.avatarImage)
         hasher.combine(self.avatarCacheKey)
     }
 }

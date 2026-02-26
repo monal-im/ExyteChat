@@ -11,7 +11,13 @@ struct AvatarImageView: View {
     var avatarCacheKey: String? = nil
 
     var body: some View {
-        if let user = user, let avatarData = user.avatarData, let image = UIImage(data: avatarData) {
+        if let user = user, let avatarImage = user.avatarImage {
+            Image(uiImage: avatarImage)
+                .resizable()
+                .scaledToFill()
+                .viewSize(avatarSize)
+                .clipShape(Circle())
+        } else if let user = user, let avatarData = user.avatarData, let image = UIImage(data: avatarData) {
             Image(uiImage: image)
                 .resizable()
                 .scaledToFill()

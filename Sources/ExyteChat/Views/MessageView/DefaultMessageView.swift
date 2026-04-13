@@ -1,6 +1,7 @@
 import SwiftUI
 
-struct DefaultMessageView: View {
+public struct DefaultMessageView: View {
+    let message: Message?
     let params: MessageBuilderParameters
 
     @EnvironmentObject private var viewModel: ChatViewModel
@@ -9,14 +10,15 @@ struct DefaultMessageView: View {
     @Environment(\.timeViewWidthBinding) private var timeViewWidth
     @Environment(\.isDisplayingMessageMenu) private var isDisplayingMessageMenu
 
-    init(params: MessageBuilderParameters) {
+    public init(message: Message? = nil, params: MessageBuilderParameters) {
+        self.message = message
         self.params = params
     }
 
-    var body: some View {
+    public var body: some View {
         MessageView(
             viewModel: viewModel,
-            message: params.message,
+            message: message ?? params.message,
             positionInUserGroup: params.positionInGroup,
             positionInMessagesSection: params.positionInMessagesSection,
             chatType: chatType,

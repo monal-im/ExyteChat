@@ -16,7 +16,7 @@ struct AttachmentsPage: View {
         if let mimeType = attachment.mimeType, mimeType.starts(with: "image/svg") {
             SVGView(contentsOf: attachment.full)
         } else if attachment.type == .image {
-            ZoomableScrollView {
+            ZoomableContainer {
                 AsyncImage(url: attachment.full) { image in
                     image
                         .resizable()

@@ -80,7 +80,10 @@ struct MessageRow: Equatable {
         && lhs.positionInUserGroup == rhs.positionInUserGroup
         && lhs.positionInMessagesSection == rhs.positionInMessagesSection
         && lhs.commentsPosition == rhs.commentsPosition
-        && lhs.message == rhs.message
+        && lhs.message.status == rhs.message.status
+        && lhs.message.triggerRedraw == rhs.message.triggerRedraw
+        && lhs.message.attributedText == rhs.message.attributedText
+        && lhs.message.reactions == rhs.message.reactions
     }
 }
 

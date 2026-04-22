@@ -294,7 +294,7 @@ public struct ChatView<MessageContent: View, InputViewContent: View, MenuAction:
                 viewModel.didUpdateAttachmentStatus = didUpdateAttachmentStatus
             }
 
-            inputViewModel.didSendMessage = { value in
+            inputViewModel.didSendMessage = { [didSendMessage, type] value in
                 Task { @MainActor in
                     didSendMessage(value)
                 }

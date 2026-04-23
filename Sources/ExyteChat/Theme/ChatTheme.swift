@@ -247,6 +247,19 @@ public struct ChatTheme: Sendable {
                 self.landscapeBackgroundLight = landscapeBackgroundLight
                 self.landscapeBackgroundDark = landscapeBackgroundDark
             }
+
+            public init(
+                safeAreaRegions: SafeAreaRegions = .all,
+                safeAreaEdges: Edge.Set = .all,
+                _ background: Image
+            ) {
+                self.safeAreaRegions = safeAreaRegions
+                self.safeAreaEdges = safeAreaEdges
+                self.portraitBackgroundLight = background
+                self.portraitBackgroundDark = background
+                self.landscapeBackgroundLight = background
+                self.landscapeBackgroundDark = background
+            }
         }
 
         public struct AttachMenu: Sendable {

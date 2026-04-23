@@ -231,12 +231,14 @@ struct MessageView: View {
                         .contentShape(Circle())
                         .onTapGesture {
                             params.tapAvatarClosure?(message.user, message.id)
+                            viewModel.focusTheInputTextView()
                         }
                 } else {
                     AvatarNameView(name: message.user.name, avatarSize: params.avatarSize)
                         .contentShape(Circle())
                         .onTapGesture {
                             params.tapAvatarClosure?(message.user, message.id)
+                            viewModel.focusTheInputTextView()
                         }
                 }
             } else {

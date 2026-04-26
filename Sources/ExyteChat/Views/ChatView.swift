@@ -435,18 +435,22 @@ public struct ChatView<MessageContent: View, InputViewContent: View, MenuAction:
                     background.landscapeBackgroundDark
                         .resizable()
                         .ignoresSafeArea(background.safeAreaRegions, edges: background.safeAreaEdges)
+                        .scaledToFill()
                 case (true, .light):
                     background.landscapeBackgroundLight
                         .resizable()
                         .ignoresSafeArea(background.safeAreaRegions, edges: background.safeAreaEdges)
+                        .scaledToFill()
                 case (false, .dark):
                     background.portraitBackgroundDark
                         .resizable()
                         .ignoresSafeArea(background.safeAreaRegions, edges: background.safeAreaEdges)
+                        .scaledToFill()
                 case (false, .light):
                     background.portraitBackgroundLight
                         .resizable()
                         .ignoresSafeArea(background.safeAreaRegions, edges: background.safeAreaEdges)
+                        .scaledToFill()
                 default:
                     theme.colors.mainBG
                 }

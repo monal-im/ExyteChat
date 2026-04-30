@@ -181,6 +181,14 @@ struct InputView: View {
                     availableInputs: availableInputs,
                     localization: localization
                 )
+#if targetEnvironment(macCatalyst)
+                .onChange(of: viewModel.text) { newValue in
+                    if newValue.last == "\n" {
+                        viewModel.text.removeLast()
+                        onAction(.send)
+                    }
+                }
+#endif
             }
         }
         .frame(minHeight: 48)

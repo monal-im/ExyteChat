@@ -83,6 +83,13 @@ struct ReactionSelectionView: View {
                                 if emojiEntryIsFocused {
                                     transitionToViewState(.search)
                                 }
+#if targetEnvironment(macCatalyst)
+                                // Open / close the system emoji picker
+                                if let nsApplication = NSClassFromString("NSApplication") as? NSObject.Type,
+                                   let sharedApp = nsApplication.value(forKey: "sharedApplication") as? NSObject {
+                                    sharedApp.perform(Selector(("orderFrontCharacterPalette:")), with: nil)
+                                }
+#endif
                             }
                     }
                 }

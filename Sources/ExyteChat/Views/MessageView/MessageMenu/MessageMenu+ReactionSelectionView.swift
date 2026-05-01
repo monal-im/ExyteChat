@@ -9,7 +9,14 @@ struct ReactionSelectionView: View {
     
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     
+#if targetEnvironment(macCatalyst)
+    // Some macOS users don't have a trackpad / Apple mouse,
+    // so they can't scroll the reaction selection view.
+    // Increase the max width so all the emojis are visible.
+    static let maxSelectionRowWidth: CGFloat = 800
+#else
     static let maxSelectionRowWidth: CGFloat = 400
+#endif
 
     @StateObject private var keyboardState = KeyboardState()
 

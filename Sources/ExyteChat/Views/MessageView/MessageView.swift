@@ -337,9 +337,9 @@ struct MessageView: View {
         if params.showTimeView {
             Group {
                 if needsCapsule {
-                    MessageTimeWithCapsuleView(text: message.formattedDate, isCurrentUser: message.user.isCurrentUser)
+                    MessageTimeWithCapsuleView(text: message.formattedDate, isCurrentUser: message.user.isCurrentUser, encrypted: message.encrypted)
                 } else {
-                    MessageTimeView(text: message.formattedDate, userType: message.user.type)
+                    MessageTimeView(text: message.formattedDate, userType: message.user.type, encrypted: message.encrypted)
                 }
             }
             .font(Font(params.timeFont))

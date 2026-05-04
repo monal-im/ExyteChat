@@ -53,6 +53,7 @@ open class Message: ObservableObject, Identifiable {
     @Published open var user: User
     @Published open var status: Status?
     @Published open var createdAt: Date
+    @Published open var encrypted: Bool = false
 
     @Published open var attributedText: AttributedString
     @Published open var attachments: [Attachment]

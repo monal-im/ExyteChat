@@ -9,28 +9,40 @@ struct MessageTimeView: View {
 
     let text: String
     let userType: UserType
+    let encrypted: Bool
 
     var body: some View {
-        Text(text)
-            .foregroundColor(theme.colors.messageTimeText(userType))
+        HStack(spacing: 4) {
+            if encrypted {
+                Image(systemName: "lock.fill")
+            }
+            Text(text)
+        }
+        .foregroundColor(theme.colors.messageTimeText(userType))
     }
 }
 
 struct MessageTimeWithCapsuleView: View {
     let text: String
     let isCurrentUser: Bool
+    let encrypted: Bool
 
     var body: some View {
-        Text(text)
-            .foregroundColor(.white)
-            .opacity(0.8)
-            .padding(.top, 4)
-            .padding(.bottom, 4)
-            .padding(.horizontal, 8)
-            .background {
-                Capsule()
-                    .foregroundColor(.black.opacity(0.4))
+        HStack(spacing: 4) {
+            if encrypted {
+                Image(systemName: "lock.fill")
             }
+            Text(text)
+        }
+        .foregroundColor(.white)
+        .opacity(0.8)
+        .padding(.top, 4)
+        .padding(.bottom, 4)
+        .padding(.horizontal, 8)
+        .background {
+            Capsule()
+                .foregroundColor(.black.opacity(0.4))
+        }
     }
 }
 

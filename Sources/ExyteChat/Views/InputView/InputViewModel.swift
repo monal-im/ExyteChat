@@ -87,7 +87,7 @@ final class InputViewModel: ObservableObject {
         case .add:
             mediaPickerMode = .camera
         case .camera:
-            mediaPickerMode = .camera
+            mediaPickerMode = .photos
             showPicker = true
         case .send:
             send()

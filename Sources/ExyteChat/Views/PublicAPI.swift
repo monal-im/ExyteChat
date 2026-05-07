@@ -268,6 +268,18 @@ public extension ChatView {
         return view
     }
 
+    func checkFileSizeClosure(_ closure: @escaping (File) -> Void) -> ChatView {
+        var view = self
+        view.messageCustomizationParameters.checkFileSizeClosure = closure
+        return view
+    }
+
+    func downloadFileClosure(_ closure: @escaping (File) -> Void) -> ChatView {
+        var view = self
+        view.messageCustomizationParameters.downloadFileClosure = closure
+        return view
+    }
+
     func showAvatar(_ show: Bool) -> ChatView {
         var view = self
         view.messageCustomizationParameters.showAvatar = show

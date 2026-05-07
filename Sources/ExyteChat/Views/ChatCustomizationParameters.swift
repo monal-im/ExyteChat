@@ -75,7 +75,11 @@ struct MessageCustomizationParameters {
 struct InputViewCustomizationParameters {
     var externalInputText: String? // External → Internal
     var onInputTextChange: ((String) -> Void)? // Internal → External
+#if targetEnvironment(macCatalyst)
+    var availableInputs: [AvailableInputType] = [.text, .audio, .file]
+#else
     var availableInputs: [AvailableInputType] = [.text, .audio, .media, .file]
+#endif
     var recorderSettings = RecorderSettings()
     var audioRecordingMode: AudioRecordingMode = .holdToRecord
     var mediaPickerParameters = MediaPickerParameters()

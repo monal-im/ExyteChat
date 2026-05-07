@@ -8,6 +8,10 @@ private struct MessageCustomizationParamsEnvironmentKey: EnvironmentKey {
     static let defaultValue = MessageCustomizationParameters()
 }
 
+private struct ChatLocalizationEnvironmentKey: EnvironmentKey {
+    static let defaultValue = ChatLocalization.defaultLocalization
+}
+
 extension EnvironmentValues {
     var chatMessageType: ChatType {
         get { self[ChatMessageTypeEnvironmentKey.self] }
@@ -17,5 +21,10 @@ extension EnvironmentValues {
     var messageCustomizationParams: MessageCustomizationParameters {
         get { self[MessageCustomizationParamsEnvironmentKey.self] }
         set { self[MessageCustomizationParamsEnvironmentKey.self] = newValue }
+    }
+
+    var chatLocalization: ChatLocalization {
+        get { self[ChatLocalizationEnvironmentKey.self] }
+        set { self[ChatLocalizationEnvironmentKey.self] = newValue }
     }
 }

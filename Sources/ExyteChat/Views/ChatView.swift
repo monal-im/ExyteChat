@@ -379,7 +379,8 @@ public struct ChatView<MessageContent: View, InputViewContent: View, MenuAction:
                 row: row,
                 chatType: type,
                 messageParams: messageCustomizationParameters,
-                isDisplayingMessageMenu: true
+                isDisplayingMessageMenu: true,
+                localization: chatCustomizationParameters.localization
             )
             .onTapGesture {
                 hideMessageMenu()

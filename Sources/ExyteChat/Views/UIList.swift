@@ -612,7 +612,8 @@ struct UIList<MessageContent: View>: UIViewRepresentable {
                     row: row,
                     chatType: type,
                     messageParams: messageParams,
-                    isDisplayingMessageMenu: false
+                    isDisplayingMessageMenu: false,
+                    localization: chatParams.localization
                 )
                 .background(MessageMenuPreferenceViewSetter(id: row.id))
                 .rotationEffect(Angle(degrees: (type == .conversation ? 180 : 0)))

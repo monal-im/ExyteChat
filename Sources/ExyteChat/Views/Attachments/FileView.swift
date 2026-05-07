@@ -10,14 +10,15 @@ public struct FileView: View {
     let isCurrentUser: Bool
     let checkSizeClosure: ((File) -> Void)?
     let downloadClosure: ((File) -> Void)?
+    let localization: ChatLocalization
 
     public var body: some View {
         if file.downloadState == .none {
-            CheckFileSizeView(file: file, isCurrentUser: isCurrentUser, checkSizeClosure: checkSizeClosure)
+            CheckFileSizeView(file: file, isCurrentUser: isCurrentUser, checkSizeClosure: checkSizeClosure, localization: localization)
         } else if file.downloadState == .headers {
-            DownloadFileView(file: file, isCurrentUser: isCurrentUser, downloadClosure: downloadClosure)
+            DownloadFileView(file: file, isCurrentUser: isCurrentUser, downloadClosure: downloadClosure, localization: localization)
         } else {
-            OpenFileView(file: file, isCurrentUser: isCurrentUser)
+            OpenFileView(file: file, isCurrentUser: isCurrentUser, localization: localization)
         }
     }
 }
@@ -27,6 +28,7 @@ public struct CheckFileSizeView: View {
     let file: File
     let isCurrentUser: Bool
     let checkSizeClosure: ((File) -> Void)?
+    let localization: ChatLocalization
     public var body: some View {
         VStack(alignment: .center) {
             FileDescriptionView(file: file)
@@ -35,14 +37,14 @@ public struct CheckFileSizeView: View {
                     isChecking = true
                     checkSizeClosure?(file)
                 }) {
-                    Text("Check File Size")
+                    Text(localization.checkFileSizeButtonText)
                         .font(.callout)
                 }
                 .buttonStyle(.bordered)
                 .tint(isCurrentUser ? .white : .gray)
             } else {
                 HStack {
-                    Text("Checking the size")
+                    Text(localization.checkingSizeText)
                         .font(.callout)
                     ProgressView()
                 }
@@ -61,6 +63,7 @@ public struct DownloadFileView: View {
     let file: File
     let isCurrentUser: Bool
     let downloadClosure: ((File) -> Void)?
+    let localization: ChatLocalization
 
     public var body: some View {
         VStack(alignment: .center) {
@@ -70,14 +73,14 @@ public struct DownloadFileView: View {
                     isDownloading = true
                     downloadClosure?(file)
                 }) {
-                    Text("Download File")
+                    Text(localization.downloadFileButtonText)
                         .font(.callout)
                 }
                 .buttonStyle(.bordered)
                 .tint(isCurrentUser ? .white : .gray)
             } else {
                 HStack {
-                    Text("Downloading")
+                    Text(localization.downloadingText)
                         .font(.callout)
                     ProgressView()
                 }
@@ -94,11 +97,12 @@ public struct OpenFileView: View {
     @State private var oldPreviewURL: URL?
     let file: File
     let isCurrentUser: Bool
+    let localization: ChatLocalization
     public var body: some View {
         VStack(alignment: .center) {
             FileDescriptionView(file: file)
             Button(action: openFile) {
-                Text("Open File")
+                Text(localization.openFileButtonText)
                     .font(.callout)
             }
             .buttonStyle(.bordered)

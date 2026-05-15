@@ -46,12 +46,14 @@ final class InputViewModel: ObservableObject {
     }
 
     func reset() {
-        showPicker = false
-        text = ""
-        saveEditingClosure = nil
-        attachments = InputViewAttachments()
-        subscribeValidation()
-        state = .empty
+        DispatchQueue.main.async { [weak self] in
+            self?.showPicker = false
+            self?.text = ""
+            self?.saveEditingClosure = nil
+            self?.attachments = InputViewAttachments()
+            self?.subscribeValidation()
+            self?.state = .empty
+        }
     }
 
     func send() {
@@ -219,7 +221,9 @@ private extension InputViewModel {
             createdAt: Date()
         )
         didSendMessage?(draft)
-        showActivityIndicator = false
-        reset()
+        DispatchQueue.main.async { [weak self] in
+            self?.showActivityIndicator = false
+            self?.reset()
+        }
     }
 }

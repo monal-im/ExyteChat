@@ -111,8 +111,8 @@ struct UIList<MessageContent: View>: UIViewRepresentable {
         let animateTableUpdate = transaction.animated && !needToScroll
 
         Task {
-            if context.coordinator.sections != sections {
-                await updateQueue.enqueue() {
+            await updateQueue.enqueue() {
+                if context.coordinator.sections != sections {
                     await updateIfNeeded(coordinator: context.coordinator, tableView: tableView, animated: animateTableUpdate)
                 }
 

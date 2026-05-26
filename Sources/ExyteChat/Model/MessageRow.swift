@@ -82,7 +82,11 @@ struct MessageRow: Equatable {
         && lhs.commentsPosition == rhs.commentsPosition
         && lhs.message.status == rhs.message.status
         && lhs.message.triggerRedraw == rhs.message.triggerRedraw
-        && lhs.message.attributedText == rhs.message.attributedText
+        // Don't compare the attributedText.
+        // Currently we override that property with a computed one, and it's expensive
+        // to compute.
+        // The id comparison above should be sufficient to compare message rows
+        //&& lhs.message.attributedText == rhs.message.attributedText
         && lhs.message.reactions == rhs.message.reactions
     }
 }

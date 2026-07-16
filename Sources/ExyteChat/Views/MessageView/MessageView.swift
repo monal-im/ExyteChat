@@ -19,6 +19,7 @@ struct MessageView: View {
     let chatType: ChatType
     let params: MessageCustomizationParameters
     let isDisplayingMessageMenu: Bool
+    let localization: ChatLocalization
 
     static let widthWithMedia: CGFloat = 204
     static let statusViewWidth: CGFloat = 10
@@ -55,7 +56,7 @@ struct MessageView: View {
             - (isCurrentUser ? MessageView.statusViewWidth : 0)
             - textPaddings
 
-        let maxWidth = message.attachments.isEmpty
+        let maxWidth = message.attachments.isEmpty && message.files.isEmpty
             ? widthWithoutMedia
             : MessageView.widthWithMedia - textPaddings
 
@@ -165,6 +166,22 @@ struct MessageView: View {
                     attachmentsView(message)
                 }
 
+                if !message.files.isEmpty {
+                    ForEach(message.files) { file in
+                        FileView(file: file, isCurrentUser: message.user.isCurrentUser, checkSizeClosure: params.checkFileSizeClosure, downloadClosure: params.downloadFileClosure, localization: localization)
+                            .padding(.horizontal, 7)
+                    }
+
+                    if !message.hasText {
+                        HStack {
+                            Spacer()
+                            messageTimeView()
+                                .padding(.trailing, 7)
+                                .padding(.bottom, 8)
+                        }
+                    }
+                }
+
                 if message.hasText {
                     textWithTimeView(message)
                         .font(Font(params.font))
@@ -200,6 +217,13 @@ struct MessageView: View {
                 attachmentsView(message)
                     .padding(.top, 4)
                     .padding(.bottom, message.hasText ? 4 : 0)
+            }
+
+            if !message.files.isEmpty {
+                ForEach(message.files) { file in
+                    FileView(file: file, isCurrentUser: message.user.isCurrentUser, checkSizeClosure: params.checkFileSizeClosure, downloadClosure: params.downloadFileClosure, localization: localization)
+                        .padding(.horizontal, 7)
+                }
             }
 
             if message.hasText {
@@ -283,7 +307,7 @@ struct MessageView: View {
             userType: message.user.type,
             params: params
         )
-        .applyIf(!message.attachments.isEmpty) {
+        .applyIf(!message.attachments.isEmpty || !message.files.isEmpty) {
             $0.frame(maxWidth: .infinity, alignment: .leading)
         }
         .fixedSize(horizontal: false, vertical: true)
@@ -298,7 +322,7 @@ struct MessageView: View {
                     HStack(alignment: .lastTextBaseline, spacing: 0) {
                         messageView
                             .lineLimit(1)
-                        if !message.attachments.isEmpty {
+                        if !message.attachments.isEmpty || !message.files.isEmpty {
                             Spacer()
                         }
                         timeView
@@ -354,12 +378,12 @@ extension View {
         let radius: CGFloat = !message.attachments.isEmpty ? 12 : 20
         let additionalMediaInset: CGFloat = message.attachments.count > 1 ? 2 : 0
         self.frame(
-            width: message.attachments.isEmpty
+            width: message.attachments.isEmpty && message.files.isEmpty
             ? nil : MessageView.widthWithMedia + additionalMediaInset
         )
         .foregroundColor(theme.colors.messageText(message.user.type))
         .background {
-            if (params.showUsername && !message.user.isCurrentUser) || isReply || message.hasText || message.recording != nil {
+            if (params.showUsername && !message.user.isCurrentUser) || isReply || message.hasText || message.recording != nil || !message.files.isEmpty {
                 RoundedRectangle(cornerRadius: radius)
                     .foregroundColor(theme.colors.messageBG(message.user.type))
                     .opacity(isReply ? theme.style.replyOpacity : 1)

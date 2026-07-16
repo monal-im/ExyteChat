@@ -9,6 +9,7 @@ public struct DraftMessage: Sendable {
     public var id: String?
     public let text: String
     public let medias: [Media]
+    public let files: [File]
     public let recording: Recording?
     public let replyMessage: ReplyMessage?
     public let createdAt: Date
@@ -16,12 +17,14 @@ public struct DraftMessage: Sendable {
     public init(id: String? = nil,
                 text: String,
                 medias: [Media],
+                files: [File],
                 recording: Recording?,
                 replyMessage: ReplyMessage?,
                 createdAt: Date) {
         self.id = id
         self.text = text
         self.medias = medias
+        self.files = files
         self.recording = recording
         self.replyMessage = replyMessage
         self.createdAt = createdAt

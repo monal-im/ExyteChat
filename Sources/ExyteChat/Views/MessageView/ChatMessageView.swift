@@ -19,6 +19,7 @@ struct ChatMessageView<MessageContent: View>: View {
     let chatType: ChatType
     let messageParams: MessageCustomizationParameters
     let isDisplayingMessageMenu: Bool
+    let localization: ChatLocalization
 
     @State var timeViewSize: CGSize?
 
@@ -46,7 +47,8 @@ struct ChatMessageView<MessageContent: View>: View {
                     positionInMessagesSection: row.positionInMessagesSection,
                     chatType: chatType,
                     params: messageParams,
-                    isDisplayingMessageMenu: isDisplayingMessageMenu
+                    isDisplayingMessageMenu: isDisplayingMessageMenu,
+                    localization: localization
                 )
             } else {
                 customMessageView

@@ -59,10 +59,12 @@ struct LocationPickerView: View {
                             dismiss()
                         }
                     }
-
+                    // Don't display the Live Location option because we don't implement in Monal
+                    /*
                     pickerActionButton(localization.shareLiveLocationText, filled: false) {
                         showLiveDurationDialog = true
                     }
+                    */
                 }
                 .padding()
                 .background(theme.colors.mainBG)

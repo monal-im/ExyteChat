@@ -7,6 +7,7 @@ import SwiftUI
 import MapKit
 import Combine
 
+@available(iOS 17.0, *)
 struct LocationPickerView: View {
 
     @Environment(\.chatTheme) var theme

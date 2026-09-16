@@ -6,6 +6,7 @@
 import SwiftUI
 import MapKit
 
+@available(iOS 17.0, *)
 struct FullscreenLocationView: View {
 
     private enum Kind {

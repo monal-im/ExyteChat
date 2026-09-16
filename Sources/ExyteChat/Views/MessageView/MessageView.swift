@@ -164,12 +164,14 @@ struct MessageView: View {
                         .padding(.horizontal, MessageView.horizontalTextPadding)
                 }
 
-                if let staticLocation = message.staticLocation {
-                    staticLocationView(staticLocation)
-                }
+                if #available(iOS 17.0, *) {
+                    if let staticLocation = message.staticLocation {
+                        staticLocationView(staticLocation)
+                    }
 
-                if let liveLocation = message.liveLocation {
-                    liveLocationView(liveLocation)
+                    if let liveLocation = message.liveLocation {
+                        liveLocationView(liveLocation)
+                    }
                 }
 
                 if !message.attachments.isEmpty {
@@ -287,6 +289,7 @@ struct MessageView: View {
         .contentShape(Rectangle())
     }
 
+    @available(iOS 17.0, *)
     @ViewBuilder
     func staticLocationView(_ location: StaticLocation) -> some View {
         let coordinate = location.coordinate
@@ -305,6 +308,7 @@ struct MessageView: View {
         }
     }
 
+    @available(iOS 17.0, *)
     @ViewBuilder
     func liveLocationView(_ liveLocation: LiveLocation) -> some View {
         let coordinate = liveLocation.coordinate

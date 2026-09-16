@@ -343,6 +343,10 @@ public extension ChatView {
 
     func setAvailableInputs(_ types: [AvailableInputType]) -> ChatView {
         var view = self
+        var types = types
+        if #unavailable(iOS 17.0) {
+            types.removeAll { $0 == .location }
+        }
         view.inputViewCustomizationParameters.availableInputs = types
         return view
     }

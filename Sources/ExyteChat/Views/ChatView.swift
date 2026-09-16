@@ -202,10 +202,12 @@ public struct ChatView<MessageContent: View, InputViewContent: View, MenuAction:
                 .ignoresSafeArea()
             }
             .sheet(isPresented: $inputViewModel.showLocationPicker) {
-                LocationPickerView(localization: chatCustomizationParameters.localization) { staticLocation in
-                    inputViewModel.attachments.staticLocation = staticLocation
-                } onPickLiveLocation: { liveLocation in
-                    inputViewModel.attachments.liveLocation = liveLocation
+                if #available(iOS 17.0, *) {
+                    LocationPickerView(localization: chatCustomizationParameters.localization) { staticLocation in
+                        inputViewModel.attachments.staticLocation = staticLocation
+                    } onPickLiveLocation: { liveLocation in
+                        inputViewModel.attachments.liveLocation = liveLocation
+                    }
                 }
             }
             .fullScreenCover(isPresented: $viewModel.fullscreenAttachmentPresented) {
@@ -224,6 +226,7 @@ public struct ChatView<MessageContent: View, InputViewContent: View, MenuAction:
                 )
             }
             .fullScreenCover(isPresented: $viewModel.fullscreenLocationPresented) {
+            if #available(iOS 17.0, *) {
                 if let messageId = viewModel.fullscreenLocationMessageId,
                    let message = sections.flatMap({ $0.rows }).first(where: { $0.message.id == messageId })?.message {
                     if let liveLocation = message.liveLocation {
@@ -243,6 +246,7 @@ public struct ChatView<MessageContent: View, InputViewContent: View, MenuAction:
                         }
                     }
                 }
+            }
             }
             .sheet(item: $viewModel.shareAttachmentsItem) { item in
                 ShareSheet(activityItems: item.urls)

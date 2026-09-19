@@ -235,10 +235,6 @@ struct InputView: View {
         availableInputs.contains(AvailableInputType.media)
     }
 
-    func isDocumentAvailable() -> Bool {
-        availableInputs.contains(AvailableInputType.document)
-    }
-
     func isLocationAvailable() -> Bool {
         availableInputs.contains(AvailableInputType.staticLocation) || availableInputs.contains(AvailableInputType.liveLocation)
     }

@@ -27,8 +27,6 @@ struct AttachmentsPage: View {
             }
         } else if attachment.type == .video {
             VideoView(viewModel: VideoViewModel(attachment: attachment))
-        } else if attachment.type == .document {
-            documentView
         } else {
             Rectangle()
                 .foregroundColor(Color.gray)
@@ -37,27 +35,6 @@ struct AttachmentsPage: View {
                 .overlay {
                     Text("Unknown", bundle: .module)
                 }
-        }
-    }
-
-    private var documentView: some View {
-        VStack(spacing: 16) {
-            theme.images.message.attachedDocument
-                .sizeAndColor(64, theme.colors.mainTint)
-
-            Text(attachment.fileName ?? attachment.full.lastPathComponent)
-                .foregroundColor(theme.colors.mainText)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 24)
-
-            Button {
-                UIApplication.shared.open(attachment.full)
-            } label: {
-                Text("Open", bundle: .module)
-                    .padding(20, 10)
-                    .background(Capsule().fill(theme.colors.mainText.opacity(0.15)))
-                    .foregroundColor(theme.colors.mainText)
-            }
         }
     }
 }

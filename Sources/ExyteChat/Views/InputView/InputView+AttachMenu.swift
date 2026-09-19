@@ -25,9 +25,6 @@ extension InputView {
                 items.append(AttachMenuItem(icon: theme.images.inputView.attachCamera, title: localization.attachCameraText, action: .camera))
             }
         }
-        if isDocumentAvailable() {
-            items.append(AttachMenuItem(icon: theme.images.attachMenu.document, title: localization.attachDocumentText, action: .document))
-        }
         if isLocationAvailable() {
             items.append(AttachMenuItem(icon: theme.images.attachMenu.location, title: localization.attachLocationText, action: .location))
         }
@@ -42,8 +39,6 @@ extension InputView {
             attachMenuButton(items: items)
         } else if let item = items.first, item.action == .photo {
             menuButton(action: .photo, image: theme.images.inputView.attach)
-        } else if let item = items.first, item.action == .document {
-            menuButton(action: .document, image: theme.images.attachMenu.document)
         } else if let item = items.first, item.action == .location {
             menuButton(action: .location, image: theme.images.attachMenu.location)
         }

@@ -166,7 +166,7 @@ public struct ChatView<MessageContent: View, InputViewContent: View, MenuAction:
                 }
             }
             // any attachment picker opening should resign the text field's focus
-            .onChange(of: [inputViewModel.showMediaPicker, inputViewModel.showDocumentPicker, inputViewModel.showLocationPicker]) { _, newValues in
+            .onChange(of: [inputViewModel.showMediaPicker, inputViewModel.showLocationPicker]) { _, newValues in
                 if newValues.contains(true) {
                     globalFocusState.focus = nil
                 }
@@ -194,12 +194,6 @@ public struct ChatView<MessageContent: View, InputViewContent: View, MenuAction:
                 medias: $inputViewModel.attachments.medias,
                 selectionParameters: inputViewCustomizationParameters.mediaPickerParameters.selectionParameters
             )
-            .sheet(isPresented: $inputViewModel.showDocumentPicker) {
-                DocumentPicker { documents in
-                    inputViewModel.attachments.documents.append(contentsOf: documents)
-                }
-                .ignoresSafeArea()
-            }
             .sheet(isPresented: $inputViewModel.showLocationPicker) {
                 LocationPickerView(
                     localization: chatCustomizationParameters.localization,

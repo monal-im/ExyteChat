@@ -52,7 +52,6 @@
     - Audio recording
     - Link with preview
     - Gif/Sticker
-    - Documents (any file type, picked via the system document picker)
     - Location - a static location, or a live location share that keeps updating for 15 minutes, 1 hour, or 8 hours
     - Custom dictionary of any Sendable
 
@@ -348,7 +347,6 @@ ChatView(messages: viewModel.messages) { draft in
     - `.text`    
     - `.media`    
     - `.audio`    
-    - `.document`    
     - `.location`    
 `setRecorderSettings` - customize audio recorder settings    
 `audioRecordingMode` - choose how audio recording is triggered:    
@@ -462,26 +460,6 @@ Users can share attachments out of the chat via the system share sheet. There ar
 
 Remote attachments (non-`file://` URLs) are downloaded to a temporary file before sharing so that actions like Save Image/Video and AirDrop work with real file data instead of just a link.
 
-## Document Attachments
-
-To let users attach arbitrary files, add `.document` to `setAvailableInputs`:
-
-```swift
-.setAvailableInputs([.text, .media, .document])
-```
-
-Tapping the attach button opens the system `UIDocumentPickerViewController` (multi-selection is enabled). Picked files show up as removable chips above the input field, get sent alongside the rest of the message, and arrive as regular `Attachment`s with `type == .document`:
-
-```swift
-if let document = message.attachments.first(where: { $0.type == .document }) {
-    document.fileName  // original file name
-    document.fileSize  // bytes, if available  
-    document.full      // local file URL right after sending, replace with a remote URL once you've uploaded it (see Large Attachment Support)  
-}  
-```
-
-Tapping a document bubble opens the fullscreen viewer with an "Open" button that calls `UIApplication.shared.open(attachment.full)` - this works well once `full` is a real `https://` URL (opens it in Safari/downloads), but not for local `file://` URLs, so make sure to upload the file and swap in a remote URL before other participants receive the message.
-
 ## Location Attachments
 
 To let users attach their location, add `.location` to `setAvailableInputs`:
@@ -563,7 +541,6 @@ The library uses the following text that can be localized:
 - Media
 - GIF
 - Camera
-- Document
 - Location
 
 ## Examples

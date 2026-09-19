@@ -15,7 +15,6 @@ final class InputViewModel: ObservableObject {
     @Published var state: InputViewState = .empty
 
     @Published var showMediaPicker = false
-    @Published var showDocumentPicker = false
     @Published var showLocationPicker = false
 
     @Published var mediaPickerMode = MediaPickerMode.photos
@@ -51,7 +50,6 @@ final class InputViewModel: ObservableObject {
         attachments = InputViewAttachments()
         state = .empty
         showMediaPicker = false
-        showDocumentPicker = false
         showLocationPicker = false
         saveEditingClosure = nil
         subscribeValidation()
@@ -86,8 +84,6 @@ final class InputViewModel: ObservableObject {
         case .camera:
             mediaPickerMode = .camera
             showMediaPicker = true
-        case .document:
-            showDocumentPicker = true
         case .location:
             showLocationPicker = true
         case .send:
@@ -163,7 +159,7 @@ private extension InputViewModel {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             guard state != .editing else { return } // special case
-            let hasAttachments = !self.attachments.medias.isEmpty || !self.attachments.documents.isEmpty || self.attachments.staticLocation != nil || self.attachments.liveLocation != nil
+            let hasAttachments = !self.attachments.medias.isEmpty || self.attachments.staticLocation != nil || self.attachments.liveLocation != nil
             if !self.text.isEmpty || hasAttachments {
                 self.state = .hasTextOrMedia
             } else if self.text.isEmpty,
@@ -213,7 +209,6 @@ private extension InputViewModel {
             id: messageId,
             text: text,
             medias: attachments.medias,
-            documents: attachments.documents,
             staticLocation: attachments.staticLocation,
             liveLocation: attachments.liveLocation,
             recording: attachments.recording,

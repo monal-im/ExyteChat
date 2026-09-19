@@ -31,7 +31,7 @@ struct TextInputView: View {
     }
     
     private func isAttachmentsAvailable() -> Bool {
-        let attachmentTypes: [AvailableInputType] = [.media, .document, .staticLocation, .liveLocation]
+        let attachmentTypes: [AvailableInputType] = [.media, .staticLocation, .liveLocation]
         return attachmentTypes.contains { availableInputs.contains($0) }
     }
 }

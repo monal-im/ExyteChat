@@ -8,14 +8,11 @@ import ExyteMediaPicker
 public enum AttachmentType: String, Codable, Sendable {
     case image
     case video
-    case document
 
     public var title: String {
         switch self {
         case .image:
             return "Image"
-        case .document:
-            return "Document"
         default:
             return "Video"
         }
@@ -64,10 +61,6 @@ public struct Attachment: Codable, Identifiable, Hashable, Sendable {
     public let mimeType: String?
     public let thumbnailCacheKey: String?
     public let fullCacheKey: String?
-    
-    /// Used for .document attachments
-    public let fileName: String?
-    public let fileSize: Int?
 
     public init(
         id: String,
@@ -77,9 +70,7 @@ public struct Attachment: Codable, Identifiable, Hashable, Sendable {
         mimeType: String? = nil,
         thumbnailCacheKey: String? = nil,
         fullCacheKey: String? = nil,
-        fullUploadStatus: UploadStatus? = nil,
-        fileName: String? = nil,
-        fileSize: Int? = nil
+        fullUploadStatus: UploadStatus? = nil
     ) {
         self.id = id
         self.thumbnail = thumbnail
@@ -89,8 +80,6 @@ public struct Attachment: Codable, Identifiable, Hashable, Sendable {
         self.thumbnailCacheKey = thumbnailCacheKey
         self.fullCacheKey = fullCacheKey
         self.fullUploadStatus = fullUploadStatus
-        self.fileName = fileName
-        self.fileSize = fileSize
     }
 
     public init(
@@ -98,9 +87,7 @@ public struct Attachment: Codable, Identifiable, Hashable, Sendable {
         url: URL,
         type: AttachmentType,
         mimeType: String? = nil,
-        cacheKey: String? = nil,
-        fileName: String? = nil,
-        fileSize: Int? = nil
+        cacheKey: String? = nil
     ) {
         self.init(
             id: id,
@@ -109,9 +96,7 @@ public struct Attachment: Codable, Identifiable, Hashable, Sendable {
             type: type,
             mimeType: mimeType,
             thumbnailCacheKey: cacheKey,
-            fullCacheKey: cacheKey,
-            fileName: fileName,
-            fileSize: fileSize
+            fullCacheKey: cacheKey
         )
     }
 
@@ -123,9 +108,7 @@ public struct Attachment: Codable, Identifiable, Hashable, Sendable {
         type: AttachmentType? = nil,
         mimeType: String? = nil,
         thumbnailCacheKey: String? = nil,
-        fullCacheKey: String? = nil,
-        fileName: String? = nil,
-        fileSize: Int? = nil
+        fullCacheKey: String? = nil
     ) -> Attachment {
         Attachment(
             id: id ?? self.id,
@@ -135,9 +118,7 @@ public struct Attachment: Codable, Identifiable, Hashable, Sendable {
             mimeType: mimeType ?? self.mimeType,
             thumbnailCacheKey: thumbnailCacheKey ?? self.thumbnailCacheKey,
             fullCacheKey: fullCacheKey ?? self.fullCacheKey,
-            fullUploadStatus: fullUploadStatus ?? self.fullUploadStatus,
-            fileName: fileName ?? self.fileName,
-            fileSize: fileSize ?? self.fileSize
+            fullUploadStatus: fullUploadStatus ?? self.fullUploadStatus
         )
     }
 }

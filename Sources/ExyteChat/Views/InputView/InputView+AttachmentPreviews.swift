@@ -13,9 +13,6 @@ extension InputView {
         if style == .message, photoPickerBackend == .system, !viewModel.attachments.medias.isEmpty {
             mediaAttachmentsPreview
         }
-        if style == .message, !viewModel.attachments.documents.isEmpty {
-            documentAttachmentsPreview
-        }
         if style == .message, let staticLocation = viewModel.attachments.staticLocation {
             staticLocationAttachmentPreview(staticLocation)
         }
@@ -80,18 +77,6 @@ extension InputView {
                 MediaAttachmentThumbnail(media: media) {
                     withAnimation(.easeInOut(duration: 0.2)) {
                         viewModel.attachments.medias.removeAll { $0.id == media.id }
-                    }
-                }
-            }
-        }
-    }
-
-    var documentAttachmentsPreview: some View {
-        horizontalAttachmentsPreviewScroll {
-            ForEach(viewModel.attachments.documents) { document in
-                DocumentAttachmentThumbnail(document: document) {
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        viewModel.attachments.documents.removeAll { $0.id == document.id }
                     }
                 }
             }
@@ -225,33 +210,6 @@ private struct MediaAttachmentThumbnail: View {
             if let data = await media.getThumbnailData(), let image = UIImage(data: data) {
                 thumbnail = image
             }
-        }
-    }
-}
-
-private struct DocumentAttachmentThumbnail: View {
-    @Environment(\.chatTheme) var theme
-
-    var document: DocumentItem
-    var onRemove: () -> Void
-
-    var body: some View {
-        RemovableAttachmentThumbnail(onRemove: onRemove) {
-            VStack(spacing: 4) {
-                theme.images.message.attachedDocument
-                    .resizable()
-                    .scaledToFit()
-                    .viewSize(28)
-
-                Text(document.fileName)
-                    .font(.caption2)
-                    .lineLimit(2)
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(theme.colors.mainText)
-                    .padding(.horizontal, 4)
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(theme.colors.messageFriendBG)
         }
     }
 }

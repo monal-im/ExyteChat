@@ -18,7 +18,6 @@ public struct ChatLocalization: Hashable {
     public var attachMediaText: String
     public var attachGifText: String
     public var attachCameraText: String
-    public var attachDocumentText: String
     public var attachLocationText: String
     public var sendLocationText: String
     public var shareLiveLocationText: String
@@ -41,7 +40,6 @@ public struct ChatLocalization: Hashable {
         attachMediaText: String = String(localized: "Media"),
         attachGifText: String = String(localized: "GIF"),
         attachCameraText: String = String(localized: "Camera"),
-        attachDocumentText: String = String(localized: "Document"),
         attachLocationText: String = String(localized: "Location"),
         sendLocationText: String = String(localized: "Send this location"),
         shareLiveLocationText: String = String(localized: "Share Live Location"),
@@ -62,7 +60,6 @@ public struct ChatLocalization: Hashable {
         self.attachMediaText = attachMediaText
         self.attachGifText = attachGifText
         self.attachCameraText = attachCameraText
-        self.attachDocumentText = attachDocumentText
         self.attachLocationText = attachLocationText
         self.sendLocationText = sendLocationText
         self.shareLiveLocationText = shareLiveLocationText
@@ -86,7 +83,6 @@ public struct ChatLocalization: Hashable {
             attachMediaText: String(localized: "Media"),
             attachGifText: String(localized: "GIF"),
             attachCameraText: String(localized: "Camera"),
-            attachDocumentText: String(localized: "Document"),
             attachLocationText: String(localized: "Location"),
             sendLocationText: String(localized: "Send this location"),
             shareLiveLocationText: String(localized: "Share Live Location"),

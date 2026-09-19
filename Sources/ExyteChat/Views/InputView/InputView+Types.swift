@@ -32,7 +32,6 @@ public enum InputViewAction: Sendable {
     case playRecord
     case pauseRecord
     case location
-    case document
 
     case saveEdit
     case cancelEdit
@@ -62,14 +61,12 @@ public enum InputViewState: Sendable {
 public enum AvailableInputType: Sendable {
     case text
     case media
-    case document
     case location
     case audio
 }
 
 public struct InputViewAttachments {
     var medias: [Media] = []
-    var documents: [DocumentItem] = []
     var staticLocation: StaticLocation?
     var liveLocation: LiveLocation?
     var recording: Recording?

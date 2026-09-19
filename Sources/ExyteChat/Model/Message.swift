@@ -152,17 +152,13 @@ open class Message: ObservableObject, Identifiable {
             }
         }
 
-        let documentAttachments = draft.documents.map { document in
-            Attachment(id: document.id, url: document.url, type: .document, fileName: document.fileName, fileSize: document.fileSize)
-        }
-
         return Message(
             id: id,
             user: user,
             status: status,
             createdAt: draft.createdAt,
             text: draft.text,
-            attachments: attachments + documentAttachments,
+            attachments: attachments,
             staticLocation: draft.staticLocation,
             liveLocation: draft.liveLocation,
             recording: draft.recording,

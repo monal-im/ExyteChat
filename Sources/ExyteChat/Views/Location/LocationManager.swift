@@ -14,6 +14,13 @@ final class LocationManager: NSObject, ObservableObject {
     private let manager = CLLocationManager()
     private var wantsContinuousUpdates = false
 
+    private enum Mode {
+        case idle
+        case oneShot
+        case continuous
+    }
+    private var mode: Mode = .idle
+
     override init() {
         authorizationStatus = manager.authorizationStatus
         super.init()
@@ -22,6 +29,7 @@ final class LocationManager: NSObject, ObservableObject {
     }
 
     func requestLocation() {
+        mode = .oneShot
         switch manager.authorizationStatus {
         case .notDetermined:
             manager.requestWhenInUseAuthorization()
@@ -34,7 +42,7 @@ final class LocationManager: NSObject, ObservableObject {
 
     /// Keeps publishing `currentLocation` updates as the device moves, until `stopContinuousUpdates()` is called.
     func startContinuousUpdates() {
-        wantsContinuousUpdates = true
+        mode = .continuous
         switch manager.authorizationStatus {
         case .notDetermined:
             manager.requestWhenInUseAuthorization()
@@ -47,7 +55,7 @@ final class LocationManager: NSObject, ObservableObject {
     }
 
     func stopContinuousUpdates() {
-        wantsContinuousUpdates = false
+        mode = .idle
         if Self.supportsBackgroundLocationUpdates {
             manager.allowsBackgroundLocationUpdates = false
         }
@@ -68,11 +76,18 @@ extension LocationManager: CLLocationManagerDelegate {
         Task { @MainActor in
             self.authorizationStatus = status
             guard status == .authorizedWhenInUse || status == .authorizedAlways else { return }
-            if self.wantsContinuousUpdates {
+            switch mode {
+            case .continuous:
                 manager.allowsBackgroundLocationUpdates = status == .authorizedAlways && Self.supportsBackgroundLocationUpdates
                 manager.startUpdatingLocation()
-            } else {
+            case .oneShot:
                 manager.requestLocation()
+                mode = .idle
+            case .idle:
+                // locationManagerDidChangeAuthorization is called *both* when the location
+                // manager is created, and when the authorization changes
+                // Don't do anything if it got called due to the creation of the location manager
+                break
             }
         }
     }

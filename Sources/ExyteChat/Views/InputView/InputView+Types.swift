@@ -20,6 +20,7 @@ public enum AudioRecordingMode: Sendable {
 
 public enum InputViewAction: Sendable {
     case photo
+    case file
     case add
     case camera
     case send
@@ -66,9 +67,11 @@ public enum AvailableInputType: Sendable {
     /// Enables sharing a live, continuously-updating location.
     case liveLocation
     case audio
+    case file
 }
 
 public struct InputViewAttachments {
+    var files: [URL] = []
     var medias: [Media] = []
     var staticLocation: StaticLocation?
     var liveLocation: LiveLocation?

@@ -16,6 +16,7 @@ public struct ChatLocalization: Hashable {
     public var recordingText: String
     public var replyToText: String
     public var attachMediaText: String
+    public var attachFileText: String
     public var attachGifText: String
     public var attachCameraText: String
     public var attachLocationText: String
@@ -28,6 +29,7 @@ public struct ChatLocalization: Hashable {
     /// Format string with a single `%d` placeholder for the number of minutes, e.g. "updated %d min ago"
     public var liveLocationUpdatedMinutesAgoFormat: String
     public var openInMapsText: String
+    public var unknownSize: String
 
     public init(
         inputPlaceholder: String,
@@ -38,6 +40,7 @@ public struct ChatLocalization: Hashable {
         recordingText: String,
         replyToText: String,
         attachMediaText: String = String(localized: "Media"),
+        attachFileText: String = String(localized: "File"),
         attachGifText: String = String(localized: "GIF"),
         attachCameraText: String = String(localized: "Camera"),
         attachLocationText: String = String(localized: "Location"),
@@ -48,7 +51,8 @@ public struct ChatLocalization: Hashable {
         liveLocationEndedText: String = String(localized: "Live location ended"),
         liveLocationUpdatedJustNowText: String = String(localized: "updated just now"),
         liveLocationUpdatedMinutesAgoFormat: String = String(localized: "updated %d min ago"),
-        openInMapsText: String = String(localized: "Open in Maps")
+        openInMapsText: String = String(localized: "Open in Maps"),
+        unknownSize: String = String(localized: "Unknown size")
     ) {
         self.inputPlaceholder = inputPlaceholder
         self.signatureText = signatureText
@@ -58,6 +62,7 @@ public struct ChatLocalization: Hashable {
         self.recordingText = recordingText
         self.replyToText = replyToText
         self.attachMediaText = attachMediaText
+        self.attachFileText = attachFileText
         self.attachGifText = attachGifText
         self.attachCameraText = attachCameraText
         self.attachLocationText = attachLocationText
@@ -69,6 +74,7 @@ public struct ChatLocalization: Hashable {
         self.liveLocationUpdatedJustNowText = liveLocationUpdatedJustNowText
         self.liveLocationUpdatedMinutesAgoFormat = liveLocationUpdatedMinutesAgoFormat
         self.openInMapsText = openInMapsText
+        self.unknownSize = unknownSize
     }
 
    public static var defaultLocalization: ChatLocalization {
@@ -81,6 +87,7 @@ public struct ChatLocalization: Hashable {
             recordingText: String(localized: "Recording..."),
             replyToText: String(localized: "Reply to"),
             attachMediaText: String(localized: "Media"),
+            attachFileText: String(localized: "File"),
             attachGifText: String(localized: "GIF"),
             attachCameraText: String(localized: "Camera"),
             attachLocationText: String(localized: "Location"),
@@ -91,7 +98,8 @@ public struct ChatLocalization: Hashable {
             liveLocationEndedText: String(localized: "Live location ended"),
             liveLocationUpdatedJustNowText: String(localized: "updated just now"),
             liveLocationUpdatedMinutesAgoFormat: String(localized: "updated %d min ago"),
-            openInMapsText: String(localized: "Open in Maps")
+            openInMapsText: String(localized: "Open in Maps"),
+            unknownSize: String(localized: "Unknown size")
         )
     }
 }

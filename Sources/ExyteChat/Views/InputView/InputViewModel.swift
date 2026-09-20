@@ -14,6 +14,7 @@ final class InputViewModel: ObservableObject {
     @Published var attachments = InputViewAttachments()
     @Published var state: InputViewState = .empty
 
+    @Published var showFilePicker = false
     @Published var showMediaPicker = false
     @Published var showLocationPicker = false
 
@@ -50,6 +51,7 @@ final class InputViewModel: ObservableObject {
         attachments = InputViewAttachments()
         state = .empty
         showMediaPicker = false
+        showFilePicker = false
         showLocationPicker = false
         saveEditingClosure = nil
         subscribeValidation()
@@ -76,6 +78,8 @@ final class InputViewModel: ObservableObject {
 
     private func inputViewActionInternal(_ action: InputViewAction) {
         switch action {
+        case .file:
+            showFilePicker = true
         case .photo:
             mediaPickerMode = .photos
             showMediaPicker = true
@@ -159,7 +163,7 @@ private extension InputViewModel {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             guard state != .editing else { return } // special case
-            let hasAttachments = !self.attachments.medias.isEmpty || self.attachments.staticLocation != nil || self.attachments.liveLocation != nil
+            let hasAttachments = !self.attachments.medias.isEmpty || !self.attachments.files.isEmpty || self.attachments.staticLocation != nil || self.attachments.liveLocation != nil
             if !self.text.isEmpty || hasAttachments {
                 self.state = .hasTextOrMedia
             } else if self.text.isEmpty,
@@ -209,6 +213,7 @@ private extension InputViewModel {
             id: messageId,
             text: text,
             medias: attachments.medias,
+            files: attachments.files.map { File(id: UUID().uuidString, localURL: $0, name: $0.lastPathComponent, downloadState: .complete) },
             staticLocation: attachments.staticLocation,
             liveLocation: attachments.liveLocation,
             recording: attachments.recording,

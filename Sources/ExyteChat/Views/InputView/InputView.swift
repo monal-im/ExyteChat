@@ -78,6 +78,26 @@ struct InputView: View {
         .onDrag(towards: .bottom, ofAmount: 100...) {
             keyboardState.resignFirstResponder()
         }
+        .fileImporter(
+            isPresented: $viewModel.showFilePicker,
+            allowedContentTypes: [.item],
+            allowsMultipleSelection: true
+        ) { result in
+            switch result {
+            case .success(let files):
+                files.forEach { file in
+                    // gain access to the directory
+                    let gotAccess = file.startAccessingSecurityScopedResource()
+                    if !gotAccess { return }
+                    viewModel.attachments.files.append(file)
+                    // release access
+                    file.stopAccessingSecurityScopedResource()
+               }
+               onAction(.send)
+            case .failure(let error):
+               print(error)
+            }
+        }
     }
 
     @ViewBuilder
@@ -233,6 +253,10 @@ struct InputView: View {
 
     func isMediaAvailable() -> Bool {
         availableInputs.contains(AvailableInputType.media)
+    }
+
+    func isFileAvailable() -> Bool {
+        return availableInputs.contains(AvailableInputType.file)
     }
 
     func isLocationAvailable() -> Bool {

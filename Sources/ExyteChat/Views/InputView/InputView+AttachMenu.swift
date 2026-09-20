@@ -20,10 +20,13 @@ extension InputView {
     fileprivate var attachMenuItems: [AttachMenuItem] {
         var items: [AttachMenuItem] = []
         if isMediaAvailable() {
-            items.append(AttachMenuItem(icon: theme.images.inputView.attach, title: localization.attachMediaText, action: .photo))
+            items.append(AttachMenuItem(icon: theme.images.attachMenu.photo, title: localization.attachMediaText, action: .photo))
             if photoPickerBackend == .system {
                 items.append(AttachMenuItem(icon: theme.images.inputView.attachCamera, title: localization.attachCameraText, action: .camera))
             }
+        }
+        if isFileAvailable() {
+            items.append(AttachMenuItem(icon: theme.images.attachMenu.document, title: localization.attachFileText, action: .file))
         }
         if isLocationAvailable() {
             items.append(AttachMenuItem(icon: theme.images.attachMenu.location, title: localization.attachLocationText, action: .location))
@@ -39,6 +42,8 @@ extension InputView {
             attachMenuButton(items: items)
         } else if let item = items.first, item.action == .photo {
             menuButton(action: .photo, image: theme.images.inputView.attach)
+        } else if let item = items.first, item.action == .file {
+            menuButton(action: .file, image: theme.images.inputView.attach)
         } else if let item = items.first, item.action == .location {
             menuButton(action: .location, image: theme.images.attachMenu.location)
         }

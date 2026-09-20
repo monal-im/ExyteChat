@@ -166,7 +166,7 @@ public struct ChatView<MessageContent: View, InputViewContent: View, MenuAction:
                 }
             }
             // any attachment picker opening should resign the text field's focus
-            .onChange(of: [inputViewModel.showPicker, inputViewModel.showLocationPicker]) { _, newValues in
+            .onChange(of: [inputViewModel.showPicker, inputViewModel.showFilePicker, inputViewModel.showLocationPicker]) { _, newValues in
                 if newValues.contains(true) {
                     globalFocusState.focus = nil
                 }

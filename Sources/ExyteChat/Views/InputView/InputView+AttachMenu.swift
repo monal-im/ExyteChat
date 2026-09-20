@@ -79,7 +79,7 @@ extension InputView {
                 $0.position(.absolute(.bottomLeading, position: CGPoint(x: attachMenuLeftMargin, y: inputBarFrame.minY - attachMenuGap)))
                     .background(.none)
                     .closeOnTapOutside(true)
-                    .animation(.default)
+                    .animation(.snappy)
             }
     }
 

@@ -76,7 +76,9 @@ extension InputView {
             .useAsPopupAnchor(id: attachMenuPopupId) {
                 attachMenuContent(items)
             } customize: {
-                $0.position(.absolute(.bottomLeading, position: CGPoint(x: attachMenuLeftMargin, y: inputBarFrame.minY - attachMenuGap)))
+                // We may be inside a UISplitView
+                let originX = max(0, windowSize().width - chatSize.width)
+                return $0.position(.absolute(.bottomLeading, position: CGPoint(x: originX + attachMenuLeftMargin, y: inputBarFrame.minY - attachMenuGap)))
                     .background(.none)
                     .closeOnTapOutside(true)
                     .animation(.snappy)

@@ -13,9 +13,6 @@ extension InputView {
         if style == .message, photoPickerBackend == .system, !viewModel.attachments.medias.isEmpty {
             mediaAttachmentsPreview
         }
-        if style == .message, let staticLocation = viewModel.attachments.staticLocation {
-            staticLocationAttachmentPreview(staticLocation)
-        }
         if style == .message, let liveLocation = viewModel.attachments.liveLocation {
             liveLocationAttachmentPreview(liveLocation)
         }

@@ -201,6 +201,7 @@ public struct ChatView<MessageContent: View, InputViewContent: View, MenuAction:
                     isLiveLocationAvailable: inputViewCustomizationParameters.availableInputs.contains(.liveLocation)
                 ) { staticLocation in
                     inputViewModel.attachments.staticLocation = staticLocation
+                    inputViewModel.send()
                 } onPickLiveLocation: { liveLocation in
                     inputViewModel.attachments.liveLocation = liveLocation
                 }

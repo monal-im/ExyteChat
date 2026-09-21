@@ -10,8 +10,9 @@ import Combine
 struct LocationPickerView: View {
 
     @Environment(\.chatTheme) var theme
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.dismiss) var swiftuiDismiss
 
+    @State private var hostController: UIViewController?
     @StateObject private var locationManager = LocationManager()
     @State private var cameraPosition: MapCameraPosition = .region(
         .closeUp(around: CLLocationCoordinate2D(latitude: 0, longitude: 0), delta: 0.05)
@@ -73,6 +74,7 @@ struct LocationPickerView: View {
                 .padding()
                 .background(theme.colors.mainBG)
             }
+            .background(ViewControllerResolver { hostController = $0 })
             .confirmationDialog(localization.shareLiveLocationText, isPresented: $showLiveDurationDialog, titleVisibility: .visible) {
                 ForEach(LiveLocationDuration.allCases) { duration in
                     Button(duration.title) {
@@ -114,6 +116,17 @@ struct LocationPickerView: View {
         }
     }
 
+    private func dismiss() {
+        swiftuiDismiss()
+#if targetEnvironment(macCatalyst)
+        // dismissing LocationPicker via SwiftUI doesn't work on macCatalyst for some reason (probably an Apple bug)
+        // So dismiss manually via UIKit
+        // Note that the call to the SwiftUI dismiss is still useful on mac, even if it doesn't work on the UI-layer
+        // because it updates the sheet's binding (inputViewModel.showLocationPicker)
+        hostController?.presentingViewController?.dismiss(animated: true)
+#endif
+    }
+
     private func pickerActionButton(_ title: String, filled: Bool, action: @escaping () -> Void) -> some View {
         let isDisabled = selectedCoordinate == nil
         let tint = isDisabled ? Color.gray : (filled ? theme.colors.sendButtonBackground : theme.colors.mainTint)
@@ -134,5 +147,17 @@ struct LocationPickerView: View {
                 .cornerRadius(12)
         }
         .disabled(isDisabled)
+    }
+}
+
+struct ViewControllerResolver: UIViewControllerRepresentable {
+    let onResolve: (UIViewController) -> Void
+
+    func makeUIViewController(context: Context) -> UIViewController {
+        UIViewController()
+    }
+
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
+        onResolve(uiViewController)
     }
 }

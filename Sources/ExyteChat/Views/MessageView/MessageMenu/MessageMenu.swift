@@ -121,7 +121,10 @@ struct MessageMenu<MainButton: View, ActionEnum: MessageMenuAction>: View {
         dismissSelf(rt)
     }
     
-    private var chatViewFrame: CGRect { CGRect(origin: .zero, size: chatSize) }
+    private var chatViewFrame: CGRect {
+        let originX = max(0, windowSize().width - chatSize.width)
+        return CGRect(x: originX, y: 0, width: chatSize.width, height: chatSize.height)
+    }
 
     var maxEntireHeight: CGFloat {
         chatViewFrame.height - UIApplication.safeArea.top - UIApplication.safeArea.bottom
@@ -175,7 +178,7 @@ struct MessageMenu<MainButton: View, ActionEnum: MessageMenuAction>: View {
             // The message and menu view
             messageMenuView()
                 .frameGetter($messageMenuFrame)
-                .position(x: chatViewFrame.width / 2 + horizontalOffset, y: verticalOffset)
+                .position(x: chatViewFrame.midX + horizontalOffset, y: verticalOffset)
                 .opacity(messageMenuOpacity)
             
         }
@@ -488,6 +491,10 @@ struct MessageMenu<MainButton: View, ActionEnum: MessageMenuAction>: View {
                 .padding(.bottom, reactionSelectionBottomPadding)
                 .transition(defaultTransition)
                 .zIndex(2)
+                // If this line gets uncommented, the view will appear in the correct position. The drawback
+                // is its width will be constrained i.e. those on mac without an Apple mouse / trackpad
+                // won't be able to react with arbitrary emojis, even if Monal is open in Fullscreen.
+                //.frame(maxWidth: chatViewFrame.width - UIApplication.safeArea.leading - UIApplication.safeArea.trailing)
             }
             
             mainButton()
@@ -542,7 +549,7 @@ struct MessageMenu<MainButton: View, ActionEnum: MessageMenuAction>: View {
         .padding(alignment == .right ? .trailing : .leading, alignment == .right ? trailingPadding : leadingPadding)
         .padding(.top, 8)
         .maxHeightGetter($menuHeight)
-        .frame(maxWidth: .infinity)
+        .frame(width: chatViewFrame.width)
     }
 
     @ViewBuilder

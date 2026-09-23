@@ -4,6 +4,7 @@
 
 import SwiftUI
 import QuickLook
+import System
 
 public struct FileView: View {
     @Environment(\.chatLocalization) var localization
@@ -32,6 +33,16 @@ public struct FileView: View {
         }
     }
 
+    // We don't have access to Monal's constants or preprocessor symbols
+    // So we deduce the appGroupID from the bundle identifier instead
+    var appGroupID: String {
+        let bundleID = Bundle.main.bundleIdentifier
+        if bundleID == "monal.alpha" {
+            return "group.monalalpha"
+        }
+        return "group.monal"
+    }
+
     func buttonAction() {
         switch(file.downloadState) {
             case .none:
@@ -45,25 +56,43 @@ public struct FileView: View {
         }
     }
 
+    // Creates a temporary hardlink, in order to have the file extension (and name) on the hardlink.
+    // This allows QuickLook to preview it correctly
+    // (the downloaded files in Monal have a hash as their name and extension)
     func openFile() {
-        // Create a temporary hardlink, in order to have
-        // the file extension (and name) on the hardlink.
-        // This allows QuickLook to preview it correctly
-        // (the downloaded files in Monal have a hash as their name and extension)
-        let tempURL = FileManager.default.temporaryDirectory
-            .appendingPathComponent(file.name)
+        guard let containerURL = FileManager.default.containerURL(
+            forSecurityApplicationGroupIdentifier: appGroupID
+        ) else {
+            fatalError("Could not access the app group container. If you added a new appGroupID, make sure to include it in this file (FileView.swift in the ExyteChat fork)")
+        }
+
+        // By storing the temporary hardlinks in the group container under "documentCache", in a directory
+        // whose name starts with "tmp.", Monal will clean up any files that don't get deleted (e.g. if the
+        // app gets force-closed while a preview is open, the hardlink doesn't get deleted, and Monal will
+        // have to clean it up)
+        let documentCacheDirectoryURL = containerURL.appendingPathComponent("documentCache")
+            .appendingPathComponent("tmp.filePreviews")
+
+        try? FileManager.default.createDirectory(
+            at: documentCacheDirectoryURL,
+            withIntermediateDirectories: true
+        )
+
+        guard let basePath = FilePath(documentCacheDirectoryURL) else { return }
+        let sanitizedFilename = file.name.sanitizedFilename()
+        guard let safePath = basePath.lexicallyResolving(FilePath(sanitizedFilename)),
+            safePath != basePath else {
+            // traversal attempt
+            return
+        }
+        let tempURL = URL(fileURLWithPath: safePath.string)
 
         try? FileManager.default.removeItem(at: tempURL)
         do {
-            // macOS can't preview hardlinks, but iOS can
-#if targetEnvironment(macCatalyst)
-            try FileManager.default.copyItem(at: file.localURL!, to: tempURL)
-#else
             try FileManager.default.linkItem(at: file.localURL!, to: tempURL)
-#endif
             previewURL = tempURL
         } catch {
-            print("Hardlinking / copying failed: \(error)")
+            print("Hardlinking failed: \(error)")
         }
     }
 

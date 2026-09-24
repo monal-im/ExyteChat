@@ -20,6 +20,8 @@ public struct ChatLocalization: Hashable {
     public var attachGifText: String
     public var attachCameraText: String
     public var attachLocationText: String
+    public var missingLocationPermissionTitle: String
+    public var missingLocationPermissionText: String
     public var sendLocationText: String
     public var shareLiveLocationText: String
     public var stopSharingLocationText: String
@@ -45,6 +47,8 @@ public struct ChatLocalization: Hashable {
         attachGifText: String = String(localized: "GIF"),
         attachCameraText: String = String(localized: "Camera"),
         attachLocationText: String = String(localized: "Location"),
+        missingLocationPermissionTitle: String = String(localized: "Location Access Needed"),
+        missingLocationPermissionText: String = String(localized: "Monal does not have access to your location. Please update the location access in your device's Privacy Settings."),
         sendLocationText: String = String(localized: "Send this location"),
         shareLiveLocationText: String = String(localized: "Share Live Location"),
         stopSharingLocationText: String = String(localized: "Stop Sharing"),
@@ -68,6 +72,8 @@ public struct ChatLocalization: Hashable {
         self.attachGifText = attachGifText
         self.attachCameraText = attachCameraText
         self.attachLocationText = attachLocationText
+        self.missingLocationPermissionTitle = missingLocationPermissionTitle
+        self.missingLocationPermissionText = missingLocationPermissionText
         self.sendLocationText = sendLocationText
         self.shareLiveLocationText = shareLiveLocationText
         self.stopSharingLocationText = stopSharingLocationText
@@ -94,6 +100,8 @@ public struct ChatLocalization: Hashable {
             attachGifText: String(localized: "GIF"),
             attachCameraText: String(localized: "Camera"),
             attachLocationText: String(localized: "Location"),
+            missingLocationPermissionTitle: String(localized: "Location Access Needed"),
+            missingLocationPermissionText: String(localized: "Monal does not have access to your location. Please update the location access in your device's Privacy Settings."),
             sendLocationText: String(localized: "Send this location"),
             shareLiveLocationText: String(localized: "Share Live Location"),
             stopSharingLocationText: String(localized: "Stop Sharing"),

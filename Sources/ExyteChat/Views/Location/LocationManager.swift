@@ -10,6 +10,7 @@ import CoreLocation
 final class LocationManager: NSObject, ObservableObject {
     @Published var currentLocation: CLLocationCoordinate2D?
     @Published var authorizationStatus: CLAuthorizationStatus
+    @Published var showMissingPermissionAlert = false
 
     private enum LocationType {
         case staticLocation
@@ -63,6 +64,7 @@ final class LocationManager: NSObject, ObservableObject {
                 manager.requestWhenInUseAuthorization()
             }
         default:
+            showMissingPermissionAlert = true
             return false
         }
     }

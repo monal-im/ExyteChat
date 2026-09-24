@@ -100,6 +100,9 @@ struct LocationPickerView: View {
                 }
             }
         }
+        .alert(localization.missingLocationPermissionTitle, isPresented: $locationManager.showMissingPermissionAlert) {
+            Button(localization.cancelButtonText, role: .cancel) { }
+        } message: { Text(localization.missingLocationPermissionText) }
         .onAppear {
             locationManager.requestStaticLocation()
         }

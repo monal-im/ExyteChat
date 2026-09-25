@@ -15,7 +15,7 @@ struct LocationPickerView: View {
     @State private var hostController: UIViewController?
     @StateObject private var locationManager = LocationManager()
     @State private var cameraPosition: MapCameraPosition = .region(
-        .closeUp(around: CLLocationCoordinate2D(latitude: 0, longitude: 0), delta: 0.05)
+        .closeUp(around: CLLocationCoordinate2D(latitude: 0, longitude: 0), delta: 100)
     )
     @State private var selectedCoordinate: CLLocationCoordinate2D?
     @State private var didCenterOnUser = false

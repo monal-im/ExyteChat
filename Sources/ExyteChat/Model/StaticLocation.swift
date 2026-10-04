@@ -25,4 +25,16 @@ public extension StaticLocation {
     init(coordinate: CLLocationCoordinate2D) {
         self.init(latitude: coordinate.latitude, longitude: coordinate.longitude)
     }
+
+    init?(geoURIString input: String) {
+        let geoPattern = /^geo:(?<lat>-?(?:90|[1-8][0-9]|[0-9])(?:\.[0-9]{1,32})?),(?<lon>-?(?:180|1[0-7][0-9]|[0-9]{1,2})(?:\.[0-9]{1,32})?)(;.*)?([?].*)?$/
+            .ignoresCase()
+        guard let match = input.wholeMatch(of: geoPattern),
+            let latitude = Double(match.lat),
+            let longitude = Double(match.lon) else {
+            print("Couldn't extract location from string '\(input)'")
+            return nil
+        }
+        self.init(latitude: latitude, longitude: longitude)
+    }
 }

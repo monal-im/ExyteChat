@@ -56,7 +56,11 @@ struct UIList<MessageContent: View>: UIViewRepresentable {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.transform = CGAffineTransform(rotationAngle: (type == .conversation ? .pi : 0))
 
+#if targetEnvironment(macCatalyst)
+        tableView.showsVerticalScrollIndicator = true
+#else
         tableView.showsVerticalScrollIndicator = false
+#endif
         tableView.estimatedSectionHeaderHeight = 1
         tableView.estimatedSectionFooterHeight = UITableView.automaticDimension
         tableView.backgroundColor = UIColor(theme.contentBG)
@@ -92,6 +96,14 @@ struct UIList<MessageContent: View>: UIViewRepresentable {
         let needToScroll = pendingScrollTo != nil
 
         //print("changes animationMode: \(animationMode) needToUpdateSections: \(needToUpdateSections), needToScroll: \(needToScroll), pendingScrollTo: \(pendingScrollTo)")
+
+#if targetEnvironment(macCatalyst)
+        // The UIList is rotated by 180 degrees, which makes the scrollbar appear on the left
+        // Set its position manually to make it appear on the right
+        tableView.scrollIndicatorInsets = UIEdgeInsets(
+            top: 0, left: 0, bottom: 0, right: tableView.bounds.width - 17
+        )
+#endif
 
         guard needToUpdateSections || needToScroll else { return }
 
@@ -662,6 +674,9 @@ struct UIList<MessageContent: View>: UIViewRepresentable {
                 }
                 .minSize(width: 0, height: 0)
                 .margins(.all, 0)
+                .applyIf(ProcessInfo.processInfo.isMacCatalystApp) {
+                    $0.margins(.leading, 9.5)
+                }
                 return tableViewCell
             }
 
@@ -691,6 +706,9 @@ struct UIList<MessageContent: View>: UIViewRepresentable {
             }
             .minSize(width: 0, height: 0)
             .margins(.all, 0)
+            .applyIf(ProcessInfo.processInfo.isMacCatalystApp) {
+                $0.margins(.leading, 9.5)
+            }
 
             return tableViewCell
         }
